@@ -1,0 +1,15 @@
+language: python
+python:
+  - "3.8"
+
+# command to install package
+install:
+  - pip install -e ".[test]"
+  - pip install coverage
+
+# command to run tests
+script:
+  - pytest tests/ --cov ppa_api
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

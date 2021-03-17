@@ -1,0 +1,9 @@
+black
+coverage
+flake8
+ipython
+pytest
+pytest-cov
+requests
+requests-mock
+timeout-decorator
