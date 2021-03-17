@@ -17,7 +17,7 @@ setup(
     url="http://www.osirium.com/",
     packages=["ppa_api"],
     classifiers=[
-        "Development Status :: 5 - production",
+        "Development Status :: 5 - Production/Stable",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
