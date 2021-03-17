@@ -14,7 +14,7 @@ setup(
     maintainer="Tom Guyatt",
     author_email="supportdesk@osirium.com",
     maintainer_email="tom.guyatt@osirium.com",
-    url="http://www.osirium.com/",
+    url="https://github.com/tomguyatt/ppa-api",
     packages=["ppa_api"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
