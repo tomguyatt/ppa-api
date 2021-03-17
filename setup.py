@@ -8,8 +8,8 @@ TEST_DEPENDENCIES = [
 ]
 
 setup(
-    name="osirium-ppa-api",
-    version="0.0.1",  # https://semver.org/
+    name="ppa-api",
+    version="1.0.0",  # https://semver.org/
     author="Osirium",
     maintainer="Tom Guyatt",
     author_email="supportdesk@osirium.com",
