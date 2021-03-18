@@ -70,9 +70,9 @@ The [examples](examples) folder contains scripts demonstrating the following ope
 
 ## Installation
 
-The package is on pypi and can be installed through pip:
+The package is on pypi and can be installed via pip:
 
-`pip install osirium-ppa-api`
+`pip install ppa-api`
 
 ## Version Requirements
 
