@@ -77,9 +77,10 @@ def _get_request(
     *,
     address: str,
     api: Optional[str],
-    endpoint: Optional[str] = None,
+    endpoint: str,
     api_key: str,
-    verify_cert: bool,
+    proxy: Optional[str],
+    verify: Union[bool, str],
     params: OptionalDict = None,
 ):
     return requests.get(
@@ -89,7 +90,8 @@ def _get_request(
         ),
         params=params,
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
-        verify=verify_cert,
+        verify=verify,
+        proxies=proxy
     )
 
 
@@ -100,7 +102,8 @@ def _post_request(
     api: str,
     endpoint: str,
     api_key: str,
-    verify_cert: bool,
+    proxy: Optional[str],
+    verify: Union[bool, str],
     data: OptionalDict = None,
 ):
     return requests.post(
@@ -110,7 +113,8 @@ def _post_request(
         ),
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         json=data,
-        verify=verify_cert,
+        verify=verify,
+        proxies=proxy
     )
 
 

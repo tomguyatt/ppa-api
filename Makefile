@@ -17,7 +17,7 @@ flake8:
 
 .PHONY: pytest
 pytest:
-	$(VENV_PATH)/bin/pip uninstall -y osirium-ppa-api
+	$(VENV_PATH)/bin/pip uninstall -y ppa-api
 	$(VENV_PATH)/bin/pip install -e ".[test]"
 	$(VENV_PATH)/bin/pytest tests/ --cov-report term --cov=ppa_api
 	$(VENV_PATH)/bin/coverage html

@@ -16,10 +16,18 @@ from .models import Image, Task, User, TaskResult
 
 
 class PPAClient:
-    def __init__(self, address: str, *, api_key: str, verify_cert: Optional[bool] = True) -> None:
+    def __init__(
+        self,
+        address: str,
+        *,
+        api_key: str,
+        verify: Optional[Union[bool, str]] = True,
+        proxy: Optional[str] = None,
+    ) -> None:
         self.address = address
         self.api_key = api_key
-        self.verify_cert = verify_cert
+        self.verify = verify
+        self.proxy = {"https": proxy} if proxy else None
 
         # Doing this on instantiation also checks the credentials for us.
         try:
@@ -34,7 +42,8 @@ class PPAClient:
         return api_method(
             address=self.address,
             api_key=self.api_key,
-            verify_cert=self.verify_cert,
+            verify=self.verify,
+            proxy=self.proxy,
             **kwargs,
         )
 
