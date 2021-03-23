@@ -79,8 +79,9 @@ def _get_request(
     api: Optional[str],
     endpoint: Optional[str] = None,
     api_key: str,
-    verify_cert: bool,
+    proxy: Optional[str],
     params: OptionalDict = None,
+    verify: Union[bool, str],
 ):
     return requests.get(
         urljoin(
@@ -89,7 +90,8 @@ def _get_request(
         ),
         params=params,
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
-        verify=verify_cert,
+        verify=verify,
+        proxies=proxy
     )
 
 
@@ -100,8 +102,9 @@ def _post_request(
     api: str,
     endpoint: str,
     api_key: str,
-    verify_cert: bool,
+    proxy: Optional[str],
     data: OptionalDict = None,
+    verify: Union[bool, str],
 ):
     return requests.post(
         urljoin(
@@ -110,7 +113,8 @@ def _post_request(
         ),
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         json=data,
-        verify=verify_cert,
+        verify=verify,
+        proxies=proxy
     )
 
 

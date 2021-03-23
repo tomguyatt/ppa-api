@@ -9,6 +9,7 @@ A Python package for integrating with Osirium PPA's public API.
 - [Installation](#installation)
 - [Version Requirements](#version-requirements)
 - [Auth & Permissions](#authentication--permissions)
+- [Certificates & Proxies](#certificates-and-proxies)
 
 ### Example Scripts
 
@@ -100,6 +101,26 @@ If the code run without the relevant PPA permissions, it will raise [PermissionD
 PermissionDenied: Forbidden (403). The user associated with this API key does not have the required users permissions in PPA.
 ```
 
+## Certificates & Proxies
+
+You can supply a proxy address to the PPA client instance using the `proxy` keyword argument.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key, proxy="my-https-proxy.net")
+```
+
+To use a custom certificate, use the `verify` keyword argument to supply a path to a CA bundle.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key, verify="/path/to/ca-bundle")
+```
+
+By default no proxy or custom certificate will be used, & the server's TLS certificate will be verified. 
+
 # Code Examples
 
 ## Client
@@ -108,7 +129,7 @@ PermissionDenied: Forbidden (403). The user associated with this API key does no
 
 Creating a PPA client instance requires an `address`  & `api_key`.
 
-If there is no trusted certificate on PPA, you'll need to set the `verify_cert` keyword argument to `False`.
+If there is no trusted certificate on PPA, you'll need to set the `verify` keyword argument to `False`.
 
 #### Trusted Certificate
 
@@ -123,7 +144,7 @@ ppa = PPAClient(address, api_key=api_key)
 ```python
 from ppa_api.client import PPAClient
 
-ppa = PPAClient(address, api_key=api_key, verify_cert=False)
+ppa = PPAClient(address, api_key=api_key, verify=False)
 ```
 
 Skipping verification may generate the following log lines whenever a request is made:
