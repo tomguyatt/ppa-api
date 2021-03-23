@@ -123,7 +123,7 @@ By default no proxy or custom certificate will be used, & the server's TLS certi
 
 To skip certificate verification completely, supply the `verify` keyword argument as `False`.
 
-The PPA version is checked when creating a `PPAClient` instance, so any proxy or certificate errors will be raised early.
+The PPA version is checked during `PPAClient` instantiation, & any proxy/certificate errors will be raised early.
 
 # Code Examples
 
