@@ -77,11 +77,11 @@ def _get_request(
     *,
     address: str,
     api: Optional[str],
-    endpoint: Optional[str] = None,
+    endpoint: str,
     api_key: str,
     proxy: Optional[str],
-    params: OptionalDict = None,
     verify: Union[bool, str],
+    params: OptionalDict = None,
 ):
     return requests.get(
         urljoin(
@@ -103,8 +103,8 @@ def _post_request(
     endpoint: str,
     api_key: str,
     proxy: Optional[str],
-    data: OptionalDict = None,
     verify: Union[bool, str],
+    data: OptionalDict = None,
 ):
     return requests.post(
         urljoin(
