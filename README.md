@@ -9,7 +9,7 @@ A Python package for integrating with Osirium PPA's public API.
 - [Installation](#installation)
 - [Version Requirements](#version-requirements)
 - [Auth & Permissions](#authentication--permissions)
-- [Certificates & Proxies](#certificates-and-proxies)
+- [Certificates & Proxies](#certificates--proxies)
 
 ### Example Scripts
 
