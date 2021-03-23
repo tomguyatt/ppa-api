@@ -111,7 +111,7 @@ from ppa_api.client import PPAClient
 ppa = PPAClient(address, api_key=api_key, proxy="my-https-proxy.net")
 ```
 
-To use a custom certificate, use the `verify` keyword argument to supply a path to a CA bundle.
+To use a custom certificate, supply the `verify` keyword argument with a path to a CA bundle.
 
 ```python
 from ppa_api.client import PPAClient
