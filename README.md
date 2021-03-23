@@ -119,7 +119,11 @@ from ppa_api.client import PPAClient
 ppa = PPAClient(address, api_key=api_key, verify="/path/to/ca-bundle")
 ```
 
-By default no proxy or custom certificate will be used, & the server's TLS certificate will be verified. 
+By default no proxy or custom certificate will be used, & the server's TLS certificate will be verified.
+
+To skip certificate verification completely, supply the `verify` keyword argument as `False`.
+
+The PPA version is checked when creating a `PPAClient` instance, so any proxy or certificate errors will be raised early.
 
 # Code Examples
 
