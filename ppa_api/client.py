@@ -77,6 +77,13 @@ class PPAClient:
     def delayed_tasks(self) -> List[DelayedTask]:
         return self._request(API.delayed_tasks)
 
+    @create.delayed_tasks
+    def delayed_task_by_id(self, delayed_task_id: int) -> Optional[DelayedTask]:
+        try:
+            return self._request(API.delayed_tasks, params={"id": f"eq.{delayed_task_id}"})[0]
+        except IndexError:
+            return None
+
     @create.tasks
     def task_by_uuid(self, uuid: str) -> Optional[Task]:
         try:
@@ -199,10 +206,12 @@ class PPAClient:
             raise exceptions.NoImageFound(
                 f"There are no images delegated to your identity with the name '{name}'."
             )
-        return self._request(
-            API.rpc,
-            endpoint="delay_task",
-            data={"image_name": name, "payload": payload, "description": description, "delay": delay},
+        return self.delayed_task_by_id(
+            self._request(
+                API.rpc,
+                endpoint="delay_task",
+                data={"image_name": name, "payload": payload, "description": description, "delay": delay},
+            )
         )
 
     def cancel_task(
