@@ -91,7 +91,7 @@ def _get_request(
         params=params,
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         verify=verify,
-        proxies=proxy
+        proxies=proxy,
     )
 
 
@@ -114,7 +114,7 @@ def _post_request(
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         json=data,
         verify=verify,
-        proxies=proxy
+        proxies=proxy,
     )
 
 

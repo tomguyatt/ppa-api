@@ -210,7 +210,12 @@ class PPAClient:
             self._request(
                 API.rpc,
                 endpoint="delay_task",
-                data={"image_name": name, "payload": payload, "description": description, "delay": delay},
+                data={
+                    "image_name": name,
+                    "payload": payload,
+                    "description": description,
+                    "delay": delay,
+                },
             )
         )
 
