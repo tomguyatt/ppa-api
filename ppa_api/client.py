@@ -12,7 +12,7 @@ from ._client import (
     validate_payload,
     OptionalDict,
 )
-from .models import Image, Task, User, TaskResult
+from .models import Image, Task, DelayedTask, User, TaskResult
 
 
 class PPAClient:
@@ -72,6 +72,10 @@ class PPAClient:
     @create.tasks
     def tasks(self) -> List[Task]:
         return self._request(API.tasks)
+
+    @create.delayed_tasks
+    def delayed_tasks(self) -> List[DelayedTask]:
+        return self._request(API.delayed_tasks)
 
     @create.tasks
     def task_by_uuid(self, uuid: str) -> Optional[Task]:
@@ -181,6 +185,24 @@ class PPAClient:
             self.start_task_async(name, payload=validate_payload(payload)).uuid,
             timeout=timeout,
             interval=interval,
+        )
+
+    def delay_task(
+        self,
+        name: str,
+        *,
+        delay: int,
+        description: str,
+        payload: OptionalDict = None,
+    ) -> Task:
+        if not self.image_by_name(name):
+            raise exceptions.NoImageFound(
+                f"There are no images delegated to your identity with the name '{name}'."
+            )
+        return self._request(
+            API.rpc,
+            endpoint="delay_task",
+            data={"image_name": name, "payload": payload, "description": description, "delay": delay},
         )
 
     def cancel_task(

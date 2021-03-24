@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2021-05-01
+### Added
+- Add new delay_task method to create a delayed task (functionality introduced in PPA v2.8.0)
+
 ## [2.0.0] - 2021-03-23
 ### Added
 - Support an HTTPS proxy & custom certificates

@@ -2,7 +2,7 @@ import functools
 
 from typing import Callable, List, Optional, Union
 
-from .models import Image, Task, User, TaskResult
+from .models import Image, Task, DelayedTask, User, TaskResult
 
 
 def _creator(
@@ -47,6 +47,14 @@ def tasks(func: Callable) -> Callable:
         return _sort(_creator(Task, func(*args, **kwargs)), "started_at", reverse=True)
 
     return _task_creator
+
+
+def delayed_tasks(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def _delayed_task_creator(*args, **kwargs) -> Optional[List[DelayedTask]]:
+        return _sort(_creator(DelayedTask, func(*args, **kwargs)), "start_time", reverse=True)
+
+    return _delayed_task_creator
 
 
 def users(func: Callable) -> Callable:

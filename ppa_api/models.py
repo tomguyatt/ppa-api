@@ -41,6 +41,25 @@ Task = namedtuple(
     ],
 )
 
+
+DelayedTask = namedtuple(
+    "DelayedTask",
+    [
+        'description',
+         'id',
+         'image',
+         'image_id',
+         'is_owner',
+         'is_pending',
+         'payload',
+         'start_time',
+         'task_uuid',
+         'timezone',
+         'trigger',
+         'username'
+    ]
+)
+
 User = namedtuple(
     "User", ["active", "authenticated_at", "deleted_at", "email", "id", "name", "username"]
 )

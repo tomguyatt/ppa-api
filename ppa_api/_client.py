@@ -121,6 +121,7 @@ def _post_request(
 class API:
     base = functools.partial(_get_request, api=None)
     tasks = functools.partial(_get_request, api="rest", endpoint="tasks")
+    delayed_tasks = functools.partial(_get_request, api="rest", endpoint="delayed_tasks")
     users = functools.partial(_get_request, api="rest", endpoint="users")
     images = functools.partial(_get_request, api="rest", endpoint="images")
     revisions = functools.partial(_get_request, api="rest", endpoint="revisions")
