@@ -201,7 +201,7 @@ class PPAClient:
         delay: int,
         description: str,
         payload: OptionalDict = None,
-    ) -> Task:
+    ) -> DelayedTask:
         if not self.image_by_name(name):
             raise exceptions.NoImageFound(
                 f"There are no images delegated to your identity with the name '{name}'."
