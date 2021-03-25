@@ -9,11 +9,20 @@ REQUEST_ERROR = {
     "status_code": 400,
 }
 
-MUST_BE_DEPLOYED = {
+TASK_MUST_BE_DEPLOYED = {
     "json": {
         "message": "This is a request error message",
         "hint": "Check the request data",
         "details": "Image must be deployed.",
+    },
+    "status_code": 400,
+}
+
+DELAY_MUST_BE_DEPLOYED = {
+    "json": {
+        "message": "This is a request error message",
+        "hint": "Check the request data",
+        "details": "No deployed version found.",
     },
     "status_code": 400,
 }
@@ -217,7 +226,47 @@ TASKS = {
     ],
 }
 
+DELAYED_TASKS = {
+    "status_code": 200,
+    "json": [
+        {
+            "id": 1,
+            "image": "Add User To Group",
+            "image_id": 1,
+            "description": "Adding John Smith to Remote Desktop Users",
+            "username": "test",
+            "task_uuid": "5069b766-0a8b-4721-8819-87d007c38db1",
+            "is_pending": False,
+            "is_owner": True,
+            "start_time": "2021-03-24T16:14:16.775347",
+            "timezone": "Etc/UTC",
+            "payload": None,
+            "has_payload": False,
+            "source": "api",
+            "parent_task_id": None,
+        },
+        {
+            "id": 2,
+            "image": "Remove User From Group",
+            "image_id": 1,
+            "description": "Removing John Smith from Remote Desktop Users",
+            "username": "admin",
+            "task_uuid": "9990056a-17b5-494a-8ae5-d3c84ca62d3b",
+            "is_pending": False,
+            "is_owner": True,
+            "start_time": "2021-03-24T20:14:16.942373",
+            "timezone": "Etc/UTC",
+            "payload": None,
+            "has_payload": False,
+            "source": "api",
+            "parent_task_id": None,
+        },
+    ]
+}
+
 TASK_STARTED = {"status_code": 200, "json": "fba5cc61-caf3-4620-a539-fcd7f4426abc"}
+
+TASK_DELAYED = {"status_code": 200, "json": 1}
 
 SUCCESSFUL_TASK = {"status_code": 200, "json": [TASKS["json"][0]]}
 
@@ -238,4 +287,5 @@ TASK_RESULT = {
 VERSIONS = {
     "2.7.0": {"status_code": 200, "json": {"appliance": "2.7.0"}},
     "2.7.1": {"status_code": 200, "json": {"appliance": "2.7.1"}},
+    "2.8.0": {"status_code": 200, "json": {"appliance": "2.8.0"}},
 }

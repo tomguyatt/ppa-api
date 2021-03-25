@@ -58,6 +58,7 @@ def api_call(func) -> Callable:
         response = func(address=address, api=api, endpoint=endpoint, **kwargs)
         try:
             response_json = response.json()
+            print(response.json())
         except json.decoder.JSONDecodeError:
             if response.status_code == 204:
                 # The request was processed but no data was returned.

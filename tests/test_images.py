@@ -12,6 +12,7 @@ IMAGE_NAME = "Dummy Image"
 IMAGE_BY_NAME_PARAMS = {"name": [f"eq.{IMAGE_NAME.lower()}"]}  # Gets lower-cased by requests-mock
 IMAGE_ID = 1
 IMAGE_BY_ID_PARAMS = {"id": [f"eq.{IMAGE_ID}"]}
+PPA = common.get_client()
 
 
 @pytest.mark.parametrize(
@@ -86,7 +87,6 @@ IMAGE_BY_ID_PARAMS = {"id": [f"eq.{IMAGE_ID}"]}
     ],
 )
 def test_image_requests(
-    ppa,
     mocker: Callable,
     mock_response: dict,
     instance_method: Callable,
@@ -94,7 +94,7 @@ def test_image_requests(
     query_string: Optional[str],
 ):
     with mocker(mock_response) as mock_adapter:
-        result = instance_method(ppa)
+        result = instance_method(PPA)
         assert all([test(result) for test in return_tests])
         if query_string:
             assert mock_adapter.request_history[0].qs == query_string

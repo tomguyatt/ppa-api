@@ -210,18 +210,25 @@ class PPAClient:
             raise exceptions.NoImageFound(
                 f"There are no images delegated to your identity with the name '{name}'."
             )
-        return self.delayed_task_by_id(
-            self._request(
-                API.rpc,
-                endpoint="delay_task",
-                data={
-                    "image_name": name,
-                    "payload": payload,
-                    "description": description,
-                    "delay": delay,
-                },
+        try:
+            return self.delayed_task_by_id(
+                self._request(
+                    API.rpc,
+                    endpoint="delay_task",
+                    data={
+                        "image_name": name,
+                        "payload": payload,
+                        "description": description,
+                        "delay": delay,
+                    },
+                )
             )
-        )
+        except exceptions.RequestError as e:
+            if "no deployed version found" in str(e).lower():
+                raise exceptions.ImageNotDeployed(
+                    f"The delayed task cannot be created as image '{name}' is not deployed."
+                )
+            raise e
 
     def cancel_task(
         self,

@@ -15,6 +15,7 @@ TEST_UUID = str(uuid.uuid4())
 TASK_BY_UUID_PARAMS = {"uuid": [f"eq.{TEST_UUID}"]}
 TASK_BY_UUID_REQUEST_BODY = f'{{"uuid": "{TEST_UUID}"}}'
 STARTED_BY_ME_PARAMS = {"is_owner": ["eq.true"]}
+PPA = common.get_client()
 
 
 # Tests that only need a single mocked endpoint are parametrized, everything else is tested further down.
@@ -180,7 +181,6 @@ STARTED_BY_ME_PARAMS = {"is_owner": ["eq.true"]}
     ],
 )
 def test_task_requests(
-    ppa,
     mocker: Callable,
     mock_response: dict,
     instance_method: Callable,
@@ -194,9 +194,9 @@ def test_task_requests(
         if expected_exception:
             raises_kwargs = {"match": exception_pattern} if exception_pattern else {}
             with pytest.raises(expected_exception, **raises_kwargs):
-                instance_method(ppa)
+                instance_method(PPA)
         else:
-            result = instance_method(ppa)
+            result = instance_method(PPA)
             assert all([test(result) for test in return_tests])
             if query_string:
                 assert mock_adapter.request_history[0].qs == query_string
@@ -204,7 +204,7 @@ def test_task_requests(
                 assert mock_adapter.request_history[0]._request.body.decode("utf-8") == request_body
 
 
-def test_start_task(ppa):
+def test_start_task():
     with common.mock_requests(
         [
             ("get", "images", mock_responses.IMAGES),
@@ -212,21 +212,21 @@ def test_start_task(ppa):
             ("post", "start_task", mock_responses.TASK_STARTED),
         ]
     ):
-        ppa.start_task("Dummy Task", timeout=0)
+        PPA.start_task("Dummy Task", timeout=0)
 
 
-def test_must_be_deployed(ppa):
+def test_must_be_deployed():
     with common.mock_requests(
         [
             ("get", "images", mock_responses.TASKS),
-            ("post", "start_task", mock_responses.MUST_BE_DEPLOYED),
+            ("post", "start_task", mock_responses.TASK_MUST_BE_DEPLOYED),
         ]
     ):
         with pytest.raises(
             exceptions.ImageNotDeployed,
             match="The task cannot be started as image 'Dummy Task' is not deployed.",
         ):
-            ppa.start_task_async("Dummy Task")
+            PPA.start_task_async("Dummy Task")
 
     # Test that a 400 error that isn't a deployment issue is raised with a generic exception.
     with common.mock_requests(
@@ -236,10 +236,10 @@ def test_must_be_deployed(ppa):
         ]
     ):
         with pytest.raises(exceptions.RequestError):
-            ppa.start_task_async("Dummy Task")
+            PPA.start_task_async("Dummy Task")
 
 
-def test_wait_for_task(ppa):
+def test_wait_for_task():
     with common.mock_requests(
         [
             (
@@ -252,4 +252,4 @@ def test_wait_for_task(ppa):
             )
         ]
     ):
-        ppa.wait_for_task(TEST_UUID, interval=0)
+        PPA.wait_for_task(TEST_UUID, interval=0)
