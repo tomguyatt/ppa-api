@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.1.0] - 2021-05-01
 ### Added
-- Add new delay_task method to create a delayed task (functionality introduced in PPA v2.8.0)
+- Add new delay_task, delayed_tasks, & delayed_task_by_id methods (functionality introduced in PPA v2.8.0)
+- All delayed task methods are wrapped with a PPA version decorator, & raise an exception if the PPA version is older than 2.8.0.
 
 ## [2.0.0] - 2021-03-23
 ### Added
