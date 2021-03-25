@@ -16,6 +16,7 @@ DELETED_USERS_PARAMS = {"select": SELECT_PARAMS, "deleted_at": ["not.is.null"]}
 LICENSED_USERS_PARAMS = {"select": SELECT_PARAMS, "deleted_at": ["is.null"], "active": ["eq.true"]}
 USER_BY_NAME_PARAMS = {"username": [f"ilike.*\\{TEST_NAME}"], "select": SELECT_PARAMS}
 USER_BY_ID_PARAMS = {"id": [f"eq.{TEST_ID}"], "select": SELECT_PARAMS}
+PPA = common.get_client()
 
 
 @pytest.mark.parametrize(
@@ -82,7 +83,6 @@ USER_BY_ID_PARAMS = {"id": [f"eq.{TEST_ID}"], "select": SELECT_PARAMS}
     ],
 )
 def test_user_requests(
-    ppa,
     mocker: Callable,
     mock_response: dict,
     instance_method: Callable,
@@ -90,7 +90,7 @@ def test_user_requests(
     query_string: Optional[str],
 ):
     with mocker(mock_response) as mock_adapter:
-        result = instance_method(ppa)
+        result = instance_method(PPA)
         assert all([test(result) for test in return_tests])
         if query_string:
             assert mock_adapter.request_history[0].qs == query_string

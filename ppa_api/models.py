@@ -36,8 +36,28 @@ Task = namedtuple(
         "stopped_at",
         "timed_out",
         "timeout",
+        "trigger",
         "username",
         "uuid",
+    ],
+)
+
+
+DelayedTask = namedtuple(
+    "DelayedTask",
+    [
+        "description",
+        "id",
+        "image",
+        "image_id",
+        "is_owner",
+        "is_pending",
+        "payload",
+        "start_time",
+        "task_uuid",
+        "timezone",
+        "trigger",
+        "username",
     ],
 )
 

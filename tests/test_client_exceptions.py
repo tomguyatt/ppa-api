@@ -82,14 +82,14 @@ EXCEPTIONS = {
         "unhandled_request_error",
     ],
 )
-def test_request_exceptions(ppa, mocker: Callable, mock_response: dict, exception_map_key: str):
+def test_request_exceptions(mocker: Callable, mock_response: dict, exception_map_key: str):
     exception_config = EXCEPTIONS[exception_map_key]
     with mocker(mock_response):
         with pytest.raises(exception_config.exception, match=exception_config.pattern):
-            ppa.images()
+            common.get_client().images()
 
 
-def test_credits_error(ppa):
+def test_credits_error():
     error_config = EXCEPTIONS["credits_required"]
     with common.mock_requests(
         [
@@ -99,7 +99,7 @@ def test_credits_error(ppa):
         ]
     ):
         with pytest.raises(error_config.exception, match=error_config.pattern):
-            ppa.start_task_async("test")
+            common.get_client().start_task_async("test")
 
 
 def test_unsupported_version():

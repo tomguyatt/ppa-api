@@ -11,8 +11,9 @@ from ._client import (
     validate_uuid,
     validate_payload,
     OptionalDict,
+    minimum_version,
 )
-from .models import Image, Task, User, TaskResult
+from .models import Image, Task, DelayedTask, User, TaskResult
 
 
 class PPAClient:
@@ -72,6 +73,19 @@ class PPAClient:
     @create.tasks
     def tasks(self) -> List[Task]:
         return self._request(API.tasks)
+
+    @minimum_version("2.8.0")
+    @create.delayed_tasks
+    def delayed_tasks(self) -> List[DelayedTask]:
+        return self._request(API.delayed_tasks)
+
+    @minimum_version("2.8.0")
+    @create.delayed_tasks
+    def delayed_task_by_id(self, delayed_task_id: int) -> Optional[DelayedTask]:
+        try:
+            return self._request(API.delayed_tasks, params={"id": f"eq.{delayed_task_id}"})[0]
+        except IndexError:
+            return None
 
     @create.tasks
     def task_by_uuid(self, uuid: str) -> Optional[Task]:
@@ -182,6 +196,39 @@ class PPAClient:
             timeout=timeout,
             interval=interval,
         )
+
+    @minimum_version("2.8.0")
+    def delay_task(
+        self,
+        name: str,
+        *,
+        delay: int,
+        description: str,
+        payload: OptionalDict = None,
+    ) -> DelayedTask:
+        if not self.image_by_name(name):
+            raise exceptions.NoImageFound(
+                f"There are no images delegated to your identity with the name '{name}'."
+            )
+        try:
+            return self.delayed_task_by_id(
+                self._request(
+                    API.rpc,
+                    endpoint="delay_task",
+                    data={
+                        "image_name": name,
+                        "payload": payload,
+                        "description": description,
+                        "delay": delay,
+                    },
+                )
+            )
+        except exceptions.RequestError as e:
+            if "no deployed version found" in str(e).lower():
+                raise exceptions.ImageNotDeployed(
+                    f"The delayed task cannot be created as image '{name}' is not deployed."
+                )
+            raise e
 
     def cancel_task(
         self,
