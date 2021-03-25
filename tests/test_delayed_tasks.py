@@ -12,9 +12,17 @@ TEST_NAME = "Dummy Task"
 TEST_ID = 1
 TASK_BY_ID_PARAMS = {"id": [f"eq.{TEST_ID}"]}
 
-UNSUPPORTED_PPA = common.get_client()
 # Delayed start is a 2.8.0 feature
 PPA = common.get_client("2.8.0")
+
+
+def test_unsupported_version():
+    with pytest.raises(
+        exceptions.VersionError,
+        match="The delayed_tasks method requires PPA version 2.8.0 or later, but your version is 2.7.1.",
+    ):
+        # Make a client with default version 2.7.1.
+        common.get_client().delayed_tasks()
 
 
 # Tests that only need a single mocked endpoint are parametrized, everything else is tested further down.
@@ -92,6 +100,19 @@ def test_delay_task():
         ]
     ):
         PPA.delay_task("Dummy Task", delay=1, description="test")
+
+
+def test_delay_not_found():
+    with common.mock_requests(
+        [
+            ("get", "images", mock_responses.EMPTY_LIST),
+        ]
+    ):
+        with pytest.raises(
+            exceptions.NoImageFound,
+            match="There are no images delegated to your identity with the name 'Dummy Task'.",
+        ):
+            PPA.delay_task("Dummy Task", delay=1, description="test")
 
 
 def test_must_be_deployed():

@@ -56,14 +56,26 @@ def mock_request(method: str, endpoint: str, responses):
         yield mocker
 
 
-IMAGES_MOCKER = functools.partial(mock_request, "get", "images")
-REVISIONS_MOCKER = functools.partial(mock_request, "get", "revisions")
-VERSION_MOCKER = functools.partial(mock_request, "get", "version")
-USERS_MOCKER = functools.partial(mock_request, "get", "users")
-TASKS_MOCKER = functools.partial(mock_request, "get", "tasks")
-DELAYED_TASKS_MOCKER = functools.partial(mock_request, "get", "delayed_tasks")
-CANCEL_TASK_MOCKER = functools.partial(mock_request, "post", "cancel_task")
-TASK_RESULT_MOCKER = functools.partial(mock_request, "post", "task_result")
+(
+    IMAGES_MOCKER,
+    REVISIONS_MOCKER,
+    VERSION_MOCKER,
+    USERS_MOCKER,
+    TASKS_MOCKER,
+    DELAYED_TASKS_MOCKER,
+) = list(
+    map(
+        lambda endpoint: functools.partial(mock_request, "get", endpoint),
+        ["images", "revisions", "version", "users", "tasks", "delayed_tasks"],
+    )
+)
+
+DELAY_TASK_MOCKER, CANCEL_TASK_MOCKER, TASK_RESULT_MOCKER = list(
+    map(
+        lambda endpoint: functools.partial(mock_request, "post", endpoint),
+        ["delay_task", "cancel_task", "task_result"],
+    )
+)
 
 
 def get_client(version="2.7.1"):

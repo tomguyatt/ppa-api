@@ -261,7 +261,7 @@ DELAYED_TASKS = {
             "source": "api",
             "parent_task_id": None,
         },
-    ]
+    ],
 }
 
 TASK_STARTED = {"status_code": 200, "json": "fba5cc61-caf3-4620-a539-fcd7f4426abc"}
