@@ -56,6 +56,11 @@ def mock_request(method: str, endpoint: str, responses):
         yield mocker
 
 
+def get_client(version="2.7.1"):
+    with mock_request("get", "version", mock_responses.VERSIONS[version]):
+        return client.PPAClient(ADDRESS, api_key=API_KEY)
+
+
 (
     IMAGES_MOCKER,
     REVISIONS_MOCKER,
@@ -76,8 +81,3 @@ DELAY_TASK_MOCKER, CANCEL_TASK_MOCKER, TASK_RESULT_MOCKER = list(
         ["delay_task", "cancel_task", "task_result"],
     )
 )
-
-
-def get_client(version="2.7.1"):
-    with mock_request("get", "version", mock_responses.VERSIONS[version]):
-        return client.PPAClient(ADDRESS, api_key=API_KEY)
