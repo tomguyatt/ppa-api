@@ -84,7 +84,6 @@ def test_delay_task_requests(
         else:
             result = instance_method(PPA)
             assert all([test(result) for test in return_tests])
-            print(mock_adapter.request_history)
             if query_string:
                 assert mock_adapter.request_history[0].qs == query_string
             if request_body:
