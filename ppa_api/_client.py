@@ -3,6 +3,7 @@ import functools
 import json
 
 from uuid import UUID
+from distutils.version import StrictVersion
 from typing import Optional, Dict, Any, List, Union, Callable
 
 import requests
@@ -35,6 +36,20 @@ def validate_payload(payload: AnyJson) -> AnyJson:
     except TypeError:
         raise exceptions.ParameterError("The supplied payload cannot be converted to JSON.")
     return payload
+
+
+def minimum_version(minimum_version: str):
+    def _function_wrapper(method):
+        def _check_version(instance, *args, **kwargs):
+            if StrictVersion(minimum_version) > StrictVersion(instance.version):
+                raise exceptions.VersionError(
+                    f"The {method.__name__} method requires PPA version {minimum_version} or later, but your version is {instance.version}."
+                )
+            return method(instance, *args, **kwargs)
+
+        return _check_version
+
+    return _function_wrapper
 
 
 def api_call(func) -> Callable:

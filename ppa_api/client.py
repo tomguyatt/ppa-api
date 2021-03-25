@@ -11,6 +11,7 @@ from ._client import (
     validate_uuid,
     validate_payload,
     OptionalDict,
+    minimum_version,
 )
 from .models import Image, Task, DelayedTask, User, TaskResult
 
@@ -73,10 +74,12 @@ class PPAClient:
     def tasks(self) -> List[Task]:
         return self._request(API.tasks)
 
+    @minimum_version("2.8.0")
     @create.delayed_tasks
     def delayed_tasks(self) -> List[DelayedTask]:
         return self._request(API.delayed_tasks)
 
+    @minimum_version("2.8.0")
     @create.delayed_tasks
     def delayed_task_by_id(self, delayed_task_id: int) -> Optional[DelayedTask]:
         try:
@@ -194,6 +197,7 @@ class PPAClient:
             interval=interval,
         )
 
+    @minimum_version("2.8.0")
     def delay_task(
         self,
         name: str,
