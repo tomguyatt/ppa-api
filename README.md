@@ -71,9 +71,27 @@ The [examples](examples) folder contains scripts demonstrating the following ope
 
 ## Installation
 
-The package is on pypi and can be installed via pip:
+The package is on pypi and can be installed via pip.
 
-`pip install ppa-api`
+### Current Stable Release
+
+```
+pip install ppa-api==2.0.0
+```
+
+### Development Release
+
+The release candidate below supports delayed tasks (a new feature in PPA v2.8.0).
+
+It is scheduled for release on the 01/05/2021.
+
+```
+pip install ppa-api==2.1.0-rc1
+```
+
+### Versions
+
+The current stable **release** 
 
 ## Version Requirements
 
