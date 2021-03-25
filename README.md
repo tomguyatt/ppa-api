@@ -89,10 +89,6 @@ pip install ppa-api==2.1.0-rc1
 
 It is scheduled for release in May 2021.
 
-### Versions
-
-The current stable **release** 
-
 ## Version Requirements
 
 - PPA Appliance 2.7.1 or later
