@@ -11,11 +11,6 @@ import mock_responses
 TEST_NAME = "dummy"
 TEST_ID = 1
 SELECT_PARAMS = ["id,username,name,email,authenticated_at,active,deleted_at"]
-CURRENT_USERS_PARAMS = {"select": SELECT_PARAMS, "deleted_at": ["is.null"]}
-DELETED_USERS_PARAMS = {"select": SELECT_PARAMS, "deleted_at": ["not.is.null"]}
-LICENSED_USERS_PARAMS = {"select": SELECT_PARAMS, "deleted_at": ["is.null"], "active": ["eq.true"]}
-USER_BY_NAME_PARAMS = {"username": [f"ilike.*\\{TEST_NAME}"], "select": SELECT_PARAMS}
-USER_BY_ID_PARAMS = {"id": [f"eq.{TEST_ID}"], "select": SELECT_PARAMS}
 PPA = common.get_client()
 
 
@@ -27,49 +22,49 @@ PPA = common.get_client()
             mock_responses.USERS,
             lambda instance: instance.users(),
             [lambda x: all([isinstance(item, models.User) for item in x])],
-            CURRENT_USERS_PARAMS,
+            {"select": SELECT_PARAMS, "deleted_at": ["is.null"]},
         ],
         [
             common.USERS_MOCKER,
             mock_responses.USERS,
             lambda instance: instance.deleted_users(),
             [lambda x: all([isinstance(item, models.User) for item in x])],
-            DELETED_USERS_PARAMS,
+            {"select": SELECT_PARAMS, "deleted_at": ["not.is.null"]},
         ],
         [
             common.USERS_MOCKER,
             mock_responses.USERS,
             lambda instance: instance.licensed_users(),
             [lambda x: all([isinstance(item, models.User) for item in x])],
-            LICENSED_USERS_PARAMS,
+            {"select": SELECT_PARAMS, "deleted_at": ["is.null"], "active": ["eq.true"]},
         ],
         [
             common.USERS_MOCKER,
             mock_responses.USERS,
             lambda instance: instance.user_by_username(TEST_NAME),
             [lambda x: isinstance(x, models.User)],
-            USER_BY_NAME_PARAMS,
+            {"username": [f"ilike.*\\{TEST_NAME}"], "select": SELECT_PARAMS},
         ],
         [
             common.USERS_MOCKER,
             mock_responses.EMPTY_LIST,
             lambda instance: instance.user_by_username(TEST_NAME),
             [lambda x: x is None],
-            USER_BY_NAME_PARAMS,
+            {"username": [f"ilike.*\\{TEST_NAME}"], "select": SELECT_PARAMS},
         ],
         [
             common.USERS_MOCKER,
             mock_responses.USERS,
             lambda instance: instance.user_by_id(TEST_ID),
             [lambda x: isinstance(x, models.User)],
-            USER_BY_ID_PARAMS,
+            {"id": [f"eq.{TEST_ID}"], "select": SELECT_PARAMS},
         ],
         [
             common.USERS_MOCKER,
             mock_responses.EMPTY_LIST,
             lambda instance: instance.user_by_id(TEST_ID),
             [lambda x: x is None],
-            USER_BY_ID_PARAMS,
+            {"id": [f"eq.{TEST_ID}"], "select": SELECT_PARAMS},
         ],
     ],
     ids=[

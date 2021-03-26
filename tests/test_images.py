@@ -9,9 +9,7 @@ import mock_responses
 
 
 IMAGE_NAME = "Dummy Image"
-IMAGE_BY_NAME_PARAMS = {"name": [f"eq.{IMAGE_NAME.lower()}"]}  # Gets lower-cased by requests-mock
 IMAGE_ID = 1
-IMAGE_BY_ID_PARAMS = {"id": [f"eq.{IMAGE_ID}"]}
 PPA = common.get_client()
 
 
@@ -37,7 +35,7 @@ PPA = common.get_client()
             mock_responses.IMAGES,
             lambda instance: instance.images_by_name(IMAGE_NAME),
             [lambda x: all([isinstance(item, models.Image) for item in x])],
-            IMAGE_BY_NAME_PARAMS,
+            {"name": [f"eq.{IMAGE_NAME.lower()}"]}  # Gets lower-cased by requests-mock,
         ],
         [
             common.REVISIONS_MOCKER,
@@ -51,7 +49,7 @@ PPA = common.get_client()
             mock_responses.IMAGES,
             lambda instance: instance.image_by_name(IMAGE_NAME),
             [lambda x: isinstance(x, models.Image)],
-            IMAGE_BY_NAME_PARAMS,
+            {"name": [f"eq.{IMAGE_NAME.lower()}"]}  # Gets lower-cased by requests-mock,
         ],
         [
             common.IMAGES_MOCKER,
@@ -65,7 +63,7 @@ PPA = common.get_client()
             mock_responses.IMAGES,
             lambda instance: instance.image_by_id(IMAGE_ID),
             [lambda x: isinstance(x, models.Image)],
-            IMAGE_BY_ID_PARAMS,
+            {"id": [f"eq.{IMAGE_ID}"]},
         ],
         [
             common.REVISIONS_MOCKER,
