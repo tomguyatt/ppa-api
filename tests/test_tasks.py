@@ -13,8 +13,6 @@ import mock_responses
 TEST_NAME = "Dummy Task"
 TEST_UUID = str(uuid.uuid4())
 TASK_BY_UUID_PARAMS = {"uuid": [f"eq.{TEST_UUID}"]}
-TASK_BY_UUID_REQUEST_BODY = f'{{"uuid": "{TEST_UUID}"}}'
-STARTED_BY_ME_PARAMS = {"is_owner": ["eq.true"]}
 PPA = common.get_client()
 
 
@@ -47,7 +45,7 @@ PPA = common.get_client()
             mock_responses.TASKS,
             lambda instance: instance.tasks_started_by_me(),
             [lambda x: all([isinstance(item, models.Task) for item in x])],
-            STARTED_BY_ME_PARAMS,
+            {"is_owner": ["eq.true"]},
             None,
             None,
             None,
@@ -128,7 +126,7 @@ PPA = common.get_client()
             lambda instance: instance.cancel_task(TEST_UUID),
             [],
             None,
-            TASK_BY_UUID_REQUEST_BODY,
+            f'{{"uuid": "{TEST_UUID}"}}',
             None,
             None,
         ],
@@ -138,7 +136,7 @@ PPA = common.get_client()
             lambda instance: instance.cancel_task(TEST_UUID),
             [],
             None,
-            TASK_BY_UUID_REQUEST_BODY,
+            f'{{"uuid": "{TEST_UUID}"}}',
             exceptions.NoTaskFound,
             rf"Task with UUID '{TEST_UUID}' is either not running or does not exist\.",
         ],
@@ -148,7 +146,7 @@ PPA = common.get_client()
             lambda instance: instance.get_task_result(TEST_UUID),
             [],
             None,
-            TASK_BY_UUID_REQUEST_BODY,
+            f'{{"uuid": "{TEST_UUID}"}}',
             None,
             None,
         ],

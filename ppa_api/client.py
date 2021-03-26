@@ -87,6 +87,21 @@ class PPAClient:
         except IndexError:
             return None
 
+    @minimum_version("2.8.0")
+    @create.delayed_tasks
+    def tasks_delayed_by_me(self) -> List[Task]:
+        return self._request(API.delayed_tasks, params={"is_owner": "eq.true"})
+
+    @minimum_version("2.8.0")
+    @create.delayed_tasks
+    def pending_delayed_tasks(self) -> List[Task]:
+        return self._request(API.delayed_tasks, params={"is_pending": "eq.true"})
+
+    @minimum_version("2.8.0")
+    @create.delayed_tasks
+    def processed_delayed_tasks(self) -> List[Task]:
+        return self._request(API.delayed_tasks, params={"is_pending": "eq.false"})
+
     @create.tasks
     def task_by_uuid(self, uuid: str) -> Optional[Task]:
         try:
