@@ -23,16 +23,13 @@ def test_unsupported_version():
 
 # Tests that only need a single mocked endpoint are parametrized, everything else is tested further down.
 @pytest.mark.parametrize(
-    "mocker, mock_response, instance_method, return_tests, query_string, request_body, expected_exception, exception_pattern",
+    "mocker, mock_response, instance_method, return_tests, query_string",
     [
         [
             common.DELAYED_TASKS_MOCKER,
             mock_responses.DELAYED_TASKS,
             lambda instance: instance.delayed_tasks(),
             [lambda x: all([isinstance(item, models.DelayedTask) for item in x])],
-            None,
-            None,
-            None,
             None,
         ],
         [
@@ -41,9 +38,6 @@ def test_unsupported_version():
             lambda instance: instance.delayed_task_by_id(1),
             [lambda x: isinstance(x, models.DelayedTask)],
             {"id": ["eq.1"]},
-            None,
-            None,
-            None,
         ],
         [
             common.DELAYED_TASKS_MOCKER,
@@ -51,9 +45,6 @@ def test_unsupported_version():
             lambda instance: instance.delayed_task_by_id(1),
             [lambda x: x is None],
             {"id": ["eq.1"]},
-            None,
-            None,
-            None,
         ],
         [
             common.DELAYED_TASKS_MOCKER,
@@ -61,9 +52,6 @@ def test_unsupported_version():
             lambda instance: instance.tasks_delayed_by_me(),
             [lambda x: all([isinstance(item, models.DelayedTask) for item in x])],
             {"is_owner": ["eq.true"]},
-            None,
-            None,
-            None,
         ],
         [
             common.DELAYED_TASKS_MOCKER,
@@ -71,9 +59,6 @@ def test_unsupported_version():
             lambda instance: instance.pending_delayed_tasks(),
             [lambda x: all([isinstance(item, models.DelayedTask) for item in x])],
             {"is_pending": ["eq.true"]},
-            None,
-            None,
-            None,
         ],
         [
             common.DELAYED_TASKS_MOCKER,
@@ -81,9 +66,6 @@ def test_unsupported_version():
             lambda instance: instance.processed_delayed_tasks(),
             [lambda x: all([isinstance(item, models.DelayedTask) for item in x])],
             {"is_pending": ["eq.false"]},
-            None,
-            None,
-            None,
         ],
     ],
     ids=[
@@ -101,22 +83,12 @@ def test_delay_task_requests(
     instance_method: Callable,
     return_tests: List[Callable],
     query_string: Optional[dict],
-    request_body: Optional[dict],
-    expected_exception: Optional[Exception],
-    exception_pattern: Optional[str],
 ):
     with mocker(mock_response) as mock_adapter:
-        if expected_exception:
-            raises_kwargs = {"match": exception_pattern} if exception_pattern else {}
-            with pytest.raises(expected_exception, **raises_kwargs):
-                instance_method(PPA)
-        else:
-            result = instance_method(PPA)
-            assert all([test(result) for test in return_tests])
-            if query_string:
-                assert mock_adapter.request_history[0].qs == query_string
-            if request_body:
-                assert mock_adapter.request_history[0]._request.body.decode("utf-8") == request_body
+        result = instance_method(PPA)
+        assert all([test(result) for test in return_tests])
+        if query_string:
+            assert mock_adapter.request_history[0].qs == query_string
 
 
 def test_delay_task():
