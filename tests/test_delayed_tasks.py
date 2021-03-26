@@ -8,10 +8,6 @@ import common
 import mock_responses
 
 
-TEST_NAME = "Dummy Task"
-TEST_ID = 1
-TASK_BY_ID_PARAMS = {"id": [f"eq.{TEST_ID}"]}
-
 # Delayed start is a 2.8.0 feature
 PPA = common.get_client("2.8.0")
 
@@ -42,9 +38,9 @@ def test_unsupported_version():
         [
             common.DELAYED_TASKS_MOCKER,
             mock_responses.DELAYED_TASKS,
-            lambda instance: instance.delayed_task_by_id(TEST_ID),
+            lambda instance: instance.delayed_task_by_id(1),
             [lambda x: isinstance(x, models.DelayedTask)],
-            TASK_BY_ID_PARAMS,
+            {"id": ["eq.1"]},
             None,
             None,
             None,
@@ -52,9 +48,39 @@ def test_unsupported_version():
         [
             common.DELAYED_TASKS_MOCKER,
             mock_responses.EMPTY_LIST,
-            lambda instance: instance.delayed_task_by_id(TEST_ID),
+            lambda instance: instance.delayed_task_by_id(1),
             [lambda x: x is None],
-            TASK_BY_ID_PARAMS,
+            {"id": ["eq.1"]},
+            None,
+            None,
+            None,
+        ],
+        [
+            common.DELAYED_TASKS_MOCKER,
+            mock_responses.DELAYED_TASKS,
+            lambda instance: instance.tasks_delayed_by_me(),
+            [lambda x: all([isinstance(item, models.DelayedTask) for item in x])],
+            {"is_owner": ["eq.true"]},
+            None,
+            None,
+            None,
+        ],
+        [
+            common.DELAYED_TASKS_MOCKER,
+            mock_responses.DELAYED_TASKS,
+            lambda instance: instance.pending_delayed_tasks(),
+            [lambda x: all([isinstance(item, models.DelayedTask) for item in x])],
+            {"is_pending": ["eq.true"]},
+            None,
+            None,
+            None,
+        ],
+        [
+            common.DELAYED_TASKS_MOCKER,
+            mock_responses.DELAYED_TASKS,
+            lambda instance: instance.processed_delayed_tasks(),
+            [lambda x: all([isinstance(item, models.DelayedTask) for item in x])],
+            {"is_pending": ["eq.false"]},
             None,
             None,
             None,
@@ -64,6 +90,9 @@ def test_unsupported_version():
         "all_delayed_tasks",
         "delayed_task_by_id",
         "delayed_task_by_id_none",
+        "tasks_delayed_by_me",
+        "pending_delayed_tasks",
+        "processed_delayed_tasks"
     ],
 )
 def test_delay_task_requests(
