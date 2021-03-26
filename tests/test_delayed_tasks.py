@@ -74,7 +74,7 @@ def test_unsupported_version():
         "delayed_task_by_id_none",
         "tasks_delayed_by_me",
         "pending_delayed_tasks",
-        "processed_delayed_tasks"
+        "processed_delayed_tasks",
     ],
 )
 def test_delay_task_requests(
