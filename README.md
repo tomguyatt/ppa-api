@@ -93,7 +93,7 @@ pip install ppa-api==2.0.0
 The current development candidate adds support for delayed tasks (a PPA v2.8.0 feature).
 
 ```
-pip install ppa-api==2.1.0-rc1
+pip install ppa-api==2.1.0-rc2
 ```
 
 It is scheduled for release in May 2021.
