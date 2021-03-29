@@ -578,7 +578,11 @@ After 10 minutes PPA will start the _latest deployed revision_ of the __Domain A
 from ppa_api.client import PPAClient
 
 ppa = PPAClient(address, api_key=api_key)
-delayed_task = ppa.delay_task("Domain Admins Audit", description="Delayed Domain Admins audit task", delay=600)
+delayed_task = ppa.delay_task(
+    "Domain Admins Audit",
+    description="Delayed Domain Admins audit task",
+    delay=600
+)
 ```
 
 #### With Payload
