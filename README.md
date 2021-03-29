@@ -55,6 +55,15 @@ The [examples](examples) folder contains scripts demonstrating the following ope
 - [Supplying Payloads](#supplying-payloads)
 - [Checking Task State](#checking-task-state)
 
+#### Delayed Tasks
+
+- [Auditing Delayed Tasks](#auditing-delayed-tasks)
+    - [All Delayed Tasks](#all-delayed-tasks)
+    - [Tasks Delayed By Me](#listing-delayed-tasks-created-by-me)
+    - [Pending Delayed Tasks](#pending-delayed-tasks)
+    - [Processed Delayed Tasks](#processed-delayed-tasks)
+- [Creating Delayed Tasks](#creating-delayed-tasks)
+
 #### Images
 
 - [Getting Images](#getting-images)
@@ -293,7 +302,7 @@ ppa = PPAClient(address, api_key=api_key)
 ppa.tasks_started_by_me()
 ```
 
-Both methods return a list of [tasks](#task).
+Both methods return a list of [Tasks](#task).
 
 ```python
 [
@@ -482,6 +491,114 @@ If the supplied payload cannot be converted to JSON, [ParameterError](#parameter
 ParameterError: The supplied payload cannot be converted to JSON.
 ```
 
+## Delayed Tasks
+
+The delayed tasks feature will be introduced in PPA version 2.8.0 (May 2021).
+
+Install the latest development candidate of this package (2.1.0-rc2 or later) to use this functionality.   
+
+### Auditing Delayed Tasks
+
+#### Listing All Delayed Tasks
+
+The following snippet gets _all_ delayed tasks visible to the API key's associated user.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+ppa.delayed_tasks()
+```
+
+#### Listing Delayed Tasks Created By Me
+
+The following snippet gets all delayed tasks _created by_ the API key's associated user.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+ppa.tasks_delayed_by_me()
+```
+
+#### Listing Pending Delayed Tasks
+
+The following snippet gets _all pending_ delayed tasks visible to the API key's associated user.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+ppa.pending_delayed_tasks()
+```
+
+#### Listing Processed Delayed Tasks
+
+The following snippet gets _all processed_ delayed tasks visible to the API key's associated user.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+ppa.processed_delayed_tasks()
+```
+
+All the methods above return a list of [Delayed Tasks](#delayedtask).
+
+```python
+[
+    DelayedTask(
+        description='Remove John Smith from Remote Desktop Users',
+        id=7,
+        image='Remove User From Groups',
+        image_id=1,
+        is_owner=True,
+        is_pending=False,
+        payload={"user": "john.smith", "groups": ["Remote Desktop Users"]},
+        start_time='2021-03-25T10:33:43.244374',
+        task_uuid='50d10ddc-be19-464d-8d5f-66b17ac38978',
+        timezone='Etc/UTC',
+        trigger='api',
+        username='example.user'
+    )
+]
+```
+
+### Creating Delayed Tasks
+
+This package allows you to create a delayed task that will run after a certain number of seconds.
+
+#### Without Payload
+
+The following snippet creates a new delayed task in PPA.
+
+After 10 minutes PPA will start the _latest deployed revision_ of the __Domain Admins Audit__ task.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+delayed_task = ppa.delay_task("Domain Admins Audit", description="Delayed Domain Admins audit task", delay=600)
+```
+
+#### With Payload
+
+You can supply a payload to a delayed task the same way you pass them to a standard task.
+
+The following snippet creates a new delayed task in PPA, along with a payload for the task to use when it runs.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+delayed_task = ppa.delay_task(
+    "Remove User From Groups",
+    description="Remove John Smith from Remote Desktop Users",
+    delay=600,
+    payload={"user": "john.smith", "groups": ["Remote Desktop Users"]}
+)
+``` 
+
 ## Images
 
 The images API endpoint represents the **Inventory** page in PPA.
@@ -592,6 +709,21 @@ The fields available for each type of named tuple are listed below.
 - timeout
 - username
 - uuid
+
+### DelayedTask
+
+- description
+- id
+- image
+- image_id
+- is_owner
+- is_pending
+- payload
+- start_time
+- task_uuid
+- timezone
+- trigger
+- username
 
 ### TaskResult
 
