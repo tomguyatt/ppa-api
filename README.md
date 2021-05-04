@@ -85,18 +85,8 @@ The package is on pypi and can be installed via pip.
 ### Current Stable Release
 
 ```
-pip install ppa-api==2.0.0
+pip install ppa-api==2.1.0
 ```
-
-### Development Release
-
-The current development candidate adds support for delayed tasks (a PPA v2.8.0 feature).
-
-```
-pip install ppa-api==2.1.0-rc2
-```
-
-It is scheduled for release in May 2021.
 
 ## Version Requirements
 
