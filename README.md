@@ -60,8 +60,8 @@ The [examples](examples) folder contains scripts demonstrating the following ope
 - [Auditing Delayed Tasks](#auditing-delayed-tasks)
     - [All Delayed Tasks](#all-delayed-tasks)
     - [Tasks Delayed By Me](#listing-delayed-tasks-created-by-me)
-    - [Pending Delayed Tasks](#pending-delayed-tasks)
-    - [Processed Delayed Tasks](#processed-delayed-tasks)
+    - [Pending Delayed Tasks](#listing-pending-delayed-tasks)
+    - [Processed Delayed Tasks](#listing-processed-delayed-tasks)
 - [Creating Delayed Tasks](#creating-delayed-tasks)
 
 #### Images
