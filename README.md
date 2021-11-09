@@ -66,10 +66,11 @@ The [examples](examples) folder contains scripts demonstrating the following ope
 
 #### Images
 
-- [Getting Images](#getting-images)
+- [Auditing Images](#auditing-images)
     - [Latest Images](#listing-latest-images)
     - [All Images](#listing-all-images)
-
+- [Deploying Images](#deploying-images)
+    - [By ID](#deploy-image-by-id)
 #### Other
 
 - [Return Types](#return-types)
@@ -593,11 +594,11 @@ delayed_task = ppa.delay_task(
 )
 ``` 
 
-## Images
+## Auditing & Deploying Images
 
 The images API endpoint represents the **Inventory** page in PPA.
 
-You can use the API to list images visible to the API key's associated user.
+You can use the API to list & deploy images visible to the API key's associated user.
 
 For an image to be visible to a user, one of the following must be true:
 
@@ -666,6 +667,20 @@ Methods that _can_ fetch multiple records will return a list of named tuples, ev
 Named tuples are immutable & their values can be accessed using dot notation.
 
 See [Return Fields](#return-fields) for the fields available in each named tuple.
+
+### Deploying Images
+
+This snippet will label & deploy the most recent revision of the supplied image.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+task_image = ppa.image_by_name("Example Task")
+ppa.deploy_image(task_image.id, "example-label")
+```
+
+Nothing is returned from the deploy method.
 
 ## Return Fields
 
