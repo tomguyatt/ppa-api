@@ -676,11 +676,28 @@ This snippet will label & deploy the most recent revision of the supplied image.
 from ppa_api.client import PPAClient
 
 ppa = PPAClient(address, api_key=api_key)
-task_image = ppa.image_by_name("Example Task")
-ppa.deploy_image(task_image.id, "example-label")
+ppa.deploy_image(
+    ppa.image_by_name("Example Task").id,
+    "example-label"
+)
 ```
 
 Nothing is returned from the deploy method.
+
+### Undeploying Images
+
+This snippet will undeploy the currently deployed revision of the supplied image.
+
+```python
+from ppa_api.client import PPAClient
+
+ppa = PPAClient(address, api_key=api_key)
+ppa.undeploy_image(
+    ppa.image_by_name("Example Task").id
+)
+```
+
+Nothing is returned from the undeploy method.
 
 ## Return Fields
 
