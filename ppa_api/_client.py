@@ -98,11 +98,13 @@ def _get_request(
     verify: Union[bool, str],
     params: OptionalDict = None,
 ):
+    url = urljoin(
+        prepend_scheme_if_needed(address, "https"),
+        f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
+    )
+    logger.info(f"sending GET request to {address} with params {params}")
     return requests.get(
-        urljoin(
-            prepend_scheme_if_needed(address, "https"),
-            f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
-        ),
+        url,
         params=params,
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         verify=verify,
@@ -119,15 +121,17 @@ def _post_request(
     api_key: str,
     proxy: Optional[str],
     verify: Union[bool, str],
-    data: OptionalDict = None,
+    json: OptionalDict = None,
 ):
+    url = urljoin(
+        prepend_scheme_if_needed(address, "https"),
+        f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
+    )
+    logger.info(f"sending POST request to {address} with json {json}")
     return requests.post(
-        urljoin(
-            prepend_scheme_if_needed(address, "https"),
-            f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
-        ),
+        url,
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
-        json=data,
+        json=json,
         verify=verify,
         proxies=proxy,
     )

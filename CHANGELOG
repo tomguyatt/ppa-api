@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2021-11-09
+### Added
+- New deploy_image & undeploy_image methods.
+
 ## [2.1.0-rc1] - 2021-03-25
 ### Added
 - Add new delayed task methods to support functionality introduced in PPA version 2.8.0

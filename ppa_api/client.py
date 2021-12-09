@@ -1,4 +1,5 @@
 import time
+import json
 
 from typing import List, Optional, Union, Callable
 
@@ -72,11 +73,20 @@ class PPAClient:
 
     def deploy_image(self, image_id: int, label: str) -> None:
         if not self.image_by_id(image_id):
-            raise NoImageFound(f"Cannot deploy image with ID {image_id} as it does not exist.")
+            raise exceptions.NoImageFound(f"Cannot deploy image with ID {image_id} as it does not exist.")
         self._request(
             API.rpc,
             endpoint="deploy_task",
-            data=json.dumps({"image_id": task_id, "tag": label, "deploy": True}),
+            json={"image_id": image_id, "tag": label, "deploy": True},
+        )
+
+    def undeploy_image(self, image_id: int) -> None:
+        if not self.image_by_id(image_id):
+            raise exceptions.NoImageFound(f"Cannot undeploy image with ID {image_id} as it does not exist.")
+        self._request(
+            API.rpc,
+            endpoint="deploy_task",
+            json={"image_id": image_id, "tag": "", "deploy": False},
         )
 
     @create.tasks
@@ -188,7 +198,7 @@ class PPAClient:
         try:
             return self.task_by_uuid(
                 self._request(
-                    API.rpc, endpoint="start_task", data={"image_name": name, "payload": payload},
+                    API.rpc, endpoint="start_task", json={"image_name": name, "payload": payload},
                 )
             )
         except exceptions.RequestError as e:
@@ -225,7 +235,7 @@ class PPAClient:
                 self._request(
                     API.rpc,
                     endpoint="delay_task",
-                    data={
+                    json={
                         "image_name": name,
                         "payload": payload,
                         "description": description,
@@ -243,7 +253,7 @@ class PPAClient:
     def cancel_task(self, uuid: str,) -> None:
         uuid = validate_uuid(uuid)
         try:
-            self._request(API.rpc, endpoint="cancel_task", data={"uuid": validate_uuid(uuid)})
+            self._request(API.rpc, endpoint="cancel_task", json={"uuid": validate_uuid(uuid)})
         except exceptions.NotFound:
             raise exceptions.NoTaskFound(
                 f"Task with UUID '{uuid}' is either not running or does not exist."
@@ -258,7 +268,7 @@ class PPAClient:
     @create.task_result
     def get_task_result(self, uuid: str) -> TaskResult:
         if task_result := self._request(
-            API.rpc, endpoint="task_result", data={"uuid": validate_uuid(uuid)}
+            API.rpc, endpoint="task_result", json={"uuid": validate_uuid(uuid)}
         ):
             return task_result
         raise exceptions.NoData(f"No result data was saved by task with UUID '{uuid}'.")
