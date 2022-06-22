@@ -165,8 +165,8 @@ ROLES = {
             "name": "Admins",
             "groups": [
                 "ad:domain.net:PPA Admins",
-                "ad:domain.net:M89030_Locum_Admin",
-                "ad:domain.net:M89031_Locum_Admin",
+                "ad:domain.net:PPA Auditors",
+                "ad:domain.net:PPA Task operators",
             ],
             "groups_count": 3,
             "users_count": 7,
