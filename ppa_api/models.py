@@ -65,4 +65,20 @@ User = namedtuple(
     "User", ["active", "authenticated_at", "deleted_at", "email", "id", "name", "username"]
 )
 
+Role = namedtuple("Role", ["id", "name", "groups", "groups_count", "users_count", "permissions"])
+
+Group = namedtuple(
+    "Group",
+    [
+        "id",
+        "name",
+        "source",
+        "user_sync",
+        "start_tasks",
+        "roles_count",
+        "images_count",
+        "members_count",
+    ],
+)
+
 TaskResult = namedtuple("TaskResult", ["exit_code", "exit_message", "result_json", "state"])

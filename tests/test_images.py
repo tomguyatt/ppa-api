@@ -35,7 +35,7 @@ PPA = common.get_client()
             mock_responses.IMAGES,
             lambda instance: instance.images_by_name(IMAGE_NAME),
             [lambda x: all([isinstance(item, models.Image) for item in x])],
-            {"name": [f"eq.{IMAGE_NAME.lower()}"]}  # Gets lower-cased by requests-mock,
+            {"name": [f"eq.{IMAGE_NAME.lower()}"]},  # Gets lower-cased by requests-mock,
         ],
         [
             common.REVISIONS_MOCKER,
@@ -49,7 +49,7 @@ PPA = common.get_client()
             mock_responses.IMAGES,
             lambda instance: instance.image_by_name(IMAGE_NAME),
             [lambda x: isinstance(x, models.Image)],
-            {"name": [f"eq.{IMAGE_NAME.lower()}"]}  # Gets lower-cased by requests-mock,
+            {"name": [f"eq.{IMAGE_NAME.lower()}"]},  # Gets lower-cased by requests-mock,
         ],
         [
             common.IMAGES_MOCKER,
