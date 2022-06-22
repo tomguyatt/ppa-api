@@ -62,7 +62,7 @@ DelayedTask = namedtuple(
 )
 
 User = namedtuple(
-    "User", ["active", "authenticated_at", "deleted_at", "email", "id", "name", "username"]
+    "User", ["active", "authenticated_at", "deleted_at", "email", "id", "name", "username", "groups", "permissions", "roles_count"]
 )
 
 Role = namedtuple("Role", ["id", "name", "groups", "groups_count", "users_count", "permissions"])
