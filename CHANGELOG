@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.0] - 2022-06-22
 ### Added
-- Extend the users model to include groups & roles_count.
+- Extend the users model to include groups, permissions, & roles_count.
 
 ## [2.2.0] - 2022-06-22
 ### Added
