@@ -16,7 +16,7 @@ from . import exceptions
 
 logger = logging.getLogger(__name__)
 
-user_query_params = "id,username,name,email,authenticated_at,active,deleted_at"
+user_query_params = "id,username,name,email,authenticated_at,active,deleted_at,groups,roles_count"
 
 OptionalDict = Optional[Dict[str, Any]]
 AnyJson = Union[None, bool, int, float, str, List[Any], Dict[str, Any]]

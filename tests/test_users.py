@@ -66,6 +66,13 @@ PPA = common.get_client()
             [lambda x: x is None],
             {"id": [f"eq.{TEST_ID}"], "select": SELECT_PARAMS},
         ],
+        [
+            common.USERS_MOCKER,
+            mock_responses.USERS,
+            lambda instance: instance.users(),
+            [lambda x: all([not item.name.startswith("ad:domain.net:") for item in x])],
+            None,
+        ],
     ],
     ids=[
         "current_users",
@@ -75,6 +82,7 @@ PPA = common.get_client()
         "user_by_name_none",
         "user_by_id",
         "user_by_id_none",
+        "user_record_modifier",
     ],
 )
 def test_user_requests(

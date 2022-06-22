@@ -9,7 +9,7 @@ from .models import Image, Task, DelayedTask, User, TaskResult, Role, Group
 def _strip_group_domain(name):
     # Turns PPA's internal names like 'ad:your.domain.net:PPA Users' into 'PPA Users'
     try:
-       name = re.search(r"^ad:[\w.]+:(.*)$", group["name"]).group(1)
+        name = re.search(r"^ad:[\w.]+:(.*)$", name).group(1)
     except AttributeError:
         # Regex didn't match, best not do anything to the name.
         pass
@@ -17,23 +17,20 @@ def _strip_group_domain(name):
 
 
 def _group_modifier(group):
-    # Turns PPA's internal names like 'ad:your.domain.net:PPA Users' into 'PPA Users'
     if all((group["name"].startswith("ad:"), group["source"] == "active-directory")):
         group["name"] = _strip_group_domain(group["name"])
     return group
 
 
-def _user_modifier(user):
-    # Calls the group name splitter above on all items in the 'groups' key.
+def _user_role_modifier(item):
     new_groups = []
-    for group in user["groups"]:
+    for group in item["groups"]:
         if group.startswith("ad:"):
-            groups.append(_strip_group_domain(group))
+            new_groups.append(_strip_group_domain(group))
             continue
         new_groups.append(group)
-    user["groups"] = new_groups
-    return user
-
+    item["groups"] = new_groups
+    return item
 
 def _creator(
     tuple_type: Union[Image, Task, User, TaskResult],
@@ -94,7 +91,7 @@ def delayed_tasks(func: Callable) -> Callable:
 def users(func: Callable) -> Callable:
     @functools.wraps(func)
     def _user_creator(*args, **kwargs) -> Optional[List[User]]:
-        return _sort(_creator(User, func(*args, **kwargs), modifier=_user_modifier), "name")
+        return _sort(_creator(User, func(*args, **kwargs), modifier=_user_role_modifier), "name")
 
     return _user_creator
 
@@ -102,13 +99,12 @@ def users(func: Callable) -> Callable:
 def roles(func: Callable) -> Callable:
     @functools.wraps(func)
     def _role_creator(*args, **kwargs) -> Optional[List[Role]]:
-        return _sort(_creator(Role, func(*args, **kwargs)), "name")
+        return _sort(_creator(Role, func(*args, **kwargs), modifier=_user_role_modifier), "name")
 
     return _role_creator
 
 
 def groups(func: Callable) -> Callable:
-
     @functools.wraps(func)
     def _group_creator(*args, **kwargs) -> Optional[List[Group]]:
         return _sort(_creator(Group, func(*args, **kwargs), modifier=_group_modifier), "name")
