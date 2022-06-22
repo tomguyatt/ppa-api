@@ -72,6 +72,7 @@ User = namedtuple(
         "name",
         "username",
         "groups",
+        "permissions",
         "roles_count",
     ],
 )

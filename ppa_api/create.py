@@ -32,6 +32,7 @@ def _user_role_modifier(item):
     item["groups"] = new_groups
     return item
 
+
 def _creator(
     tuple_type: Union[Image, Task, User, TaskResult],
     results: Union[List[dict], dict],
