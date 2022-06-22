@@ -167,10 +167,26 @@ class PPAClient:
         except IndexError:
             return None
 
+    @create.roles
+    @minimum_version("2.10.0")
+    def role_by_id(self, role_id: Union[str, int]) -> Group:
+        try:
+            return self._request(API.roles, params={"id": f"eq.{role_id}"})[0]
+        except IndexError:
+            return None
+
     @create.groups
     @minimum_version("2.10.0")
     def groups(self) -> List[Group]:
         return self._request(API.groups)
+
+    @create.groups
+    @minimum_version("2.10.0")
+    def group_by_id(self, group_id: Union[str, int]) -> Group:
+        try:
+            return self._request(API.groups, params={"id": f"eq.{group_id}"})[0]
+        except IndexError:
+            return None
 
     @create.groups
     @minimum_version("2.10.0")

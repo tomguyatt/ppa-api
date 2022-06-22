@@ -9,7 +9,7 @@ import mock_responses
 
 
 TEST_NAME = "dummy"
-TEST_ID = 1
+TEST_ID = 123
 PPA = common.get_client("2.10.0")
 OLD_PPA = common.get_client()
 
@@ -31,11 +31,15 @@ OLD_PPA = common.get_client()
             [lambda item: isinstance(item, models.Role)],
             {"name": [f"ilike.*\\{TEST_NAME}"]},
         ],
+        [
+            common.ROLES_MOCKER,
+            mock_responses.ROLES,
+            lambda instance: instance.role_by_id(TEST_ID),
+            [lambda item: isinstance(item, models.Role)],
+            {"id": [f"eq.{TEST_ID}"]},
+        ],
     ],
-    ids=[
-        "roles",
-        "role_by_name",
-    ],
+    ids=["roles", "role_by_name", "role_by_id"],
 )
 def test_role_requests(
     mocker: Callable,

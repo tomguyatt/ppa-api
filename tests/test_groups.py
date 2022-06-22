@@ -9,7 +9,7 @@ import mock_responses
 
 
 TEST_NAME = "dummy"
-TEST_ID = 1
+TEST_ID = 123
 PPA = common.get_client("2.10.0")
 OLD_PPA = common.get_client()
 
@@ -31,10 +31,34 @@ OLD_PPA = common.get_client()
             [lambda item: isinstance(item, models.Group)],
             {"name": [f"ilike.*\\{TEST_NAME}"]},
         ],
+        [
+            common.GROUPS_MOCKER,
+            mock_responses.GROUPS,
+            lambda instance: instance.group_by_id(TEST_ID),
+            [lambda item: isinstance(item, models.Group)],
+            {"id": [f"eq.{TEST_ID}"]},
+        ],
+        [
+            common.GROUPS_MOCKER,
+            mock_responses.GROUPS,
+            lambda instance: instance.groups(),
+            [
+                lambda x: all(
+                    [
+                        not item.name.startswith("ad:domain.net:")
+                        for item in x
+                        if item.source == "active-directory"
+                    ]
+                )
+            ],
+            None,
+        ],
     ],
     ids=[
         "groups",
         "group_by_name",
+        "group_by_id",
+        "group_record_modifier",
     ],
 )
 def test_group_requests(
