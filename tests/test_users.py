@@ -10,7 +10,9 @@ import mock_responses
 
 TEST_NAME = "dummy"
 TEST_ID = 1
-SELECT_PARAMS = ["id,username,name,email,authenticated_at,active,deleted_at"]
+SELECT_PARAMS = [
+    "id,username,name,email,authenticated_at,active,deleted_at,groups,permissions,roles_count"
+]
 PPA = common.get_client()
 
 
@@ -66,6 +68,21 @@ PPA = common.get_client()
             [lambda x: x is None],
             {"id": [f"eq.{TEST_ID}"], "select": SELECT_PARAMS},
         ],
+        [
+            common.USERS_MOCKER,
+            mock_responses.USERS,
+            lambda instance: instance.users(),
+            [
+                lambda items: all(
+                    [
+                        not group.startswith("ad:domain.net:")
+                        for item in items
+                        for group in item.groups
+                    ]
+                )
+            ],
+            None,
+        ],
     ],
     ids=[
         "current_users",
@@ -75,6 +92,7 @@ PPA = common.get_client()
         "user_by_name_none",
         "user_by_id",
         "user_by_id_none",
+        "user_record_modifier",
     ],
 )
 def test_user_requests(

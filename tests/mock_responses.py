@@ -57,30 +57,39 @@ USERS = {
     "json": [
         {
             "id": 6,
-            "username": "2012-domain\\system.auditor",
+            "username": "domain\\system.auditor",
             "name": "system auditor",
             "email": "",
             "authenticated_at": "2021-02-11T14:45:15.934458+00:00",
             "active": False,
             "deleted_at": None,
+            "groups": [
+                "ad:domain.net:PPA Admins",
+            ],
         },
         {
             "id": 13,
-            "username": "2012-domain\\cloud.engineer",
+            "username": "domain\\cloud.engineer",
             "name": "cloud engineer",
             "email": "",
             "authenticated_at": "2021-02-11T14:28:33.535783+00:00",
             "active": False,
             "deleted_at": "2021-02-16T15:10:31.531594+00:00",
+            "groups": ["ad:domain.net:PPA Admins", "ad:domain.net:PPA Auditors"],
         },
         {
             "id": 3,
-            "username": "2012-domain\\service.operator",
+            "username": "domain\\service.operator",
             "name": "service operator",
             "email": "",
             "authenticated_at": "2021-02-11T14:43:55.358433+00:00",
             "active": False,
             "deleted_at": None,
+            "groups": [
+                "ad:domain.net:PPA Task Operators",
+                "ad:domain.net:PPA Admins",
+                "ad:domain.net:PPA Auditors",
+            ],
         },
     ],
 }
@@ -105,7 +114,7 @@ ROLES = {
         {
             "id": 4,
             "name": "Task Operators",
-            "groups": ["ad:trust.tom:PPA Task Operators"],
+            "groups": ["ad:domain.net:PPA Task Operators"],
             "groups_count": 1,
             "users_count": 5,
             "permissions": [
@@ -119,7 +128,7 @@ ROLES = {
         {
             "id": 5,
             "name": "Auditors",
-            "groups": ["ad:trust.tom:PPA Auditors"],
+            "groups": ["ad:domain.net:PPA Auditors"],
             "groups_count": 1,
             "users_count": 3,
             "permissions": [
@@ -155,9 +164,9 @@ ROLES = {
             "id": 2,
             "name": "Admins",
             "groups": [
-                "ad:trust.tom:PPA Admins",
-                "ad:trust.tom:M89030_Locum_Admin",
-                "ad:trust.tom:M89031_Locum_Admin",
+                "ad:domain.net:PPA Admins",
+                "ad:domain.net:PPA Auditors",
+                "ad:domain.net:PPA Task operators",
             ],
             "groups_count": 3,
             "users_count": 7,

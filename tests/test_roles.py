@@ -38,8 +38,28 @@ OLD_PPA = common.get_client()
             [lambda item: isinstance(item, models.Role)],
             {"id": [f"eq.{TEST_ID}"]},
         ],
+        [
+            common.ROLES_MOCKER,
+            mock_responses.ROLES,
+            lambda instance: instance.roles(),
+            [
+                lambda items: all(
+                    [
+                        not group.startswith("ad:domain.net:")
+                        for item in items
+                        for group in item.groups
+                    ]
+                )
+            ],
+            None,
+        ],
     ],
-    ids=["roles", "role_by_name", "role_by_id"],
+    ids=[
+        "roles",
+        "role_by_name",
+        "role_by_id",
+        "user_record_modifier",
+    ],
 )
 def test_role_requests(
     mocker: Callable,
