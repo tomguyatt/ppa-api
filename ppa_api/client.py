@@ -172,7 +172,7 @@ class PPAClient:
     def groups(self) -> List[Group]:
         return self._request(API.groups)
 
-    @create.roles
+    @create.groups
     @minimum_version("2.10.0")
     def group_by_name(self, name: str) -> Group:
         try:

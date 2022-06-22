@@ -24,6 +24,8 @@ ENDPOINTS = {
     "task_result": "backend/v1/rest/rpc/task_result",
     "version": "backend/v1/version",
     "users": "backend/v1/rest/users",
+    "roles": "backend/v1/rest/roles",
+    "groups": "backend/v1/rest/groups",
 }
 
 
@@ -66,12 +68,14 @@ def get_client(version="2.7.1"):
     REVISIONS_MOCKER,
     VERSION_MOCKER,
     USERS_MOCKER,
+    ROLES_MOCKER,
+    GROUPS_MOCKER,
     TASKS_MOCKER,
     DELAYED_TASKS_MOCKER,
 ) = list(
     map(
         lambda endpoint: functools.partial(mock_request, "get", endpoint),
-        ["images", "revisions", "version", "users", "tasks", "delayed_tasks"],
+        ["images", "revisions", "version", "users", "roles", "groups", "tasks", "delayed_tasks"],
     )
 )
 
