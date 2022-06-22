@@ -85,7 +85,7 @@ The package is on pypi and can be installed via pip.
 ### Current Stable Release
 
 ```
-pip install ppa-api==2.1.0
+pip install ppa-api==2.3.0
 ```
 
 ## Version Requirements
