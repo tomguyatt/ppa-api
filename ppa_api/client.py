@@ -13,7 +13,7 @@ from ._client import (
     OptionalDict,
     minimum_version,
 )
-from .models import Image, Task, DelayedTask, User, TaskResult
+from .models import Image, Task, DelayedTask, User, Role, Group, TaskResult
 
 
 class PPAClient:
@@ -151,6 +151,32 @@ class PPAClient:
                 API.users,
                 params={"username": f"ilike.*\\{name}", "select": user_query_params},
             )[0]
+        except IndexError:
+            return None
+
+    @create.roles
+    @minimum_version("2.10.0")
+    def roles(self) -> List[Role]:
+        return self._request(API.roles)
+
+    @create.roles
+    @minimum_version("2.10.0")
+    def role_by_name(self, name: str) -> Role:
+        try:
+            return self._request(API.roles, params={"name": f"ilike.*\\{name}"})[0]
+        except IndexError:
+            return None
+
+    @create.groups
+    @minimum_version("2.10.0")
+    def groups(self) -> List[Group]:
+        return self._request(API.groups)
+
+    @create.roles
+    @minimum_version("2.10.0")
+    def group_by_name(self, name: str) -> Group:
+        try:
+            return self._request(API.groups, params={"name": f"ilike.*\\{name}"})[0]
         except IndexError:
             return None
 

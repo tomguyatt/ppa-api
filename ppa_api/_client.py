@@ -138,6 +138,8 @@ class API:
     tasks = functools.partial(_get_request, api="rest", endpoint="tasks")
     delayed_tasks = functools.partial(_get_request, api="rest", endpoint="delayed_tasks")
     users = functools.partial(_get_request, api="rest", endpoint="users")
+    roles = functools.partial(_get_request, api="rest", endpoint="roles")
+    groups = functools.partial(_get_request, api="rest", endpoint="groups")
     images = functools.partial(_get_request, api="rest", endpoint="images")
     revisions = functools.partial(_get_request, api="rest", endpoint="revisions")
     rpc = functools.partial(_post_request, api="rest/rpc")
