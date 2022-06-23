@@ -63,9 +63,7 @@ USERS = {
             "authenticated_at": "2021-02-11T14:45:15.934458+00:00",
             "active": False,
             "deleted_at": None,
-            "groups": [
-                "ad:domain.net:PPA Admins",
-            ],
+            "groups": None,
         },
         {
             "id": 13,
