@@ -24,7 +24,7 @@ def _group_modifier(group):
 
 def _user_role_modifier(item):
     new_groups = []
-    for group in item["groups"]:
+    for group in (item.get("groups") or []):
         if group.startswith("ad:"):
             new_groups.append(_strip_group_domain(group))
             continue
