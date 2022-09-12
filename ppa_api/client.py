@@ -1,4 +1,5 @@
 import time
+import datetime
 
 from typing import List, Optional, Union, Callable
 
@@ -82,11 +83,12 @@ class PPAClient:
         params = {}
         if deployed is not None:
             params = {"deployed": f"eq.{'true' if deployed is True else 'false'}"}
-        params.update(order="started_at.desc", started_at=f"gt.{(datetime.datetime.utcnow() - datetime.timedelta(days=days)).strftime('%Y-%m-%dT%H:%M')}")
-        return self._request(
-            API.tasks,
-            params=params
+        params.update(
+            order="started_at.desc",
+            started_at=f"gt.{(datetime.datetime.utcnow() - datetime.timedelta(days=days)).strftime('%Y-%m-%dT%H:%M')}",
         )
+        return self._request(API.tasks, params=params)
+
 
     @minimum_version("2.8.0")
     @create.delayed_tasks
