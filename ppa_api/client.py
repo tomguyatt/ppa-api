@@ -71,8 +71,22 @@ class PPAClient:
             return None
 
     @create.tasks
-    def tasks(self) -> List[Task]:
-        return self._request(API.tasks)
+    def tasks(self, deployed: Optional[bool] = None) -> List[Task]:
+        params = {}
+        if deployed is not None:
+            params = {"deployed": f"eq.{'true' if deployed is True else 'false'}"}
+        return self._request(API.tasks, params=params)
+
+    @create.tasks
+    def recent_tasks(self, days: Optional[int] = 30, deployed: Optional[bool] = None):
+        params = {}
+        if deployed is not None:
+            params = {"deployed": f"eq.{'true' if deployed is True else 'false'}"}
+        params.update(order="started_at.desc", started_at=f"gt.{(datetime.datetime.utcnow() - datetime.timedelta(days=days)).strftime('%Y-%m-%dT%H:%M')}")
+        return self._request(
+            API.tasks,
+            params=params
+        )
 
     @minimum_version("2.8.0")
     @create.delayed_tasks

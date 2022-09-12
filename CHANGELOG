@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2022-09-12
+### Added
+- New method PPAClient.recent_tasks() that takes an optional number of days (defaults to 30).
+- Support optional 'deployed' keyword argument for PPAClient.tasks() & PPAClient.recent_tasks().
+
 ## [2.3.1] - 2022-06-23
 ### Fixed
 - Correctly load users who do not have any associated groups.
