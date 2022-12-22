@@ -1,11 +1,14 @@
 VENV_PATH := .venv/main
+PYTHON := $(VENV_PATH)/bin/python3.10
 
 .venv:
-	python3.8 -m venv $(VENV_PATH)
+	python3.10 -m venv $(VENV_PATH)
 	$(VENV_PATH)/bin/pip install -r requirements.in
 
-requirements.txt: requirements.in .venv
-	$(VENV_PATH)/bin/pip freeze > requirements.txt
+.PHONY: pip-deps
+pip-deps: requirements.in .venv
+	$(VENV_PATH)/bin/pip install pip==21.3.1 setuptools==58.3.0 wheel==0.37.0
+	$(VENV_PATH)/bin/pip install -r requirements.in
 
 .PHONY: black
 black:
@@ -14,6 +17,10 @@ black:
 .PHONY: flake8
 flake8:
 	flake8 --ignore W503,E501,W293 ppa_api tests examples
+
+.PHONY: build
+build:
+	$(PYTHON) setup.py bdist_wheel
 
 .PHONY: pytest
 pytest:

@@ -312,3 +312,10 @@ class PPAClient:
         ):
             return task_result
         raise exceptions.NoData(f"No result data was saved by task with UUID '{uuid}'.")
+
+    def test_system_event_notification(self, event_name: str, email_address: str, details: dict) -> None:
+        return self._request(
+            API.rpc,
+            endpoint="test_system_event_email",
+            data={"system_event": event_name, "email_address": email_address, "details": details}
+        )

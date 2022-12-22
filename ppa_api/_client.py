@@ -24,6 +24,13 @@ OptionalDict = Optional[Dict[str, Any]]
 AnyJson = Union[None, bool, int, float, str, List[Any], Dict[str, Any]]
 
 
+def _create_url(address: str, api: str, endpoint: str):
+    return urljoin(
+        prepend_scheme_if_needed(address, "https"),
+        f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
+    )
+
+
 def validate_uuid(uuid: str) -> str:
     try:
         UUID(uuid, version=4)
@@ -100,11 +107,10 @@ def _get_request(
     verify: Union[bool, str],
     params: OptionalDict = None,
 ):
+    url = _create_url(address, api, endpoint)
+    logger.info(f"sending GET request to {url}...")
     return requests.get(
-        urljoin(
-            prepend_scheme_if_needed(address, "https"),
-            f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
-        ),
+        url,
         params=params,
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         verify=verify,
@@ -123,11 +129,11 @@ def _post_request(
     verify: Union[bool, str],
     data: OptionalDict = None,
 ):
+    url = _create_url(address, api, endpoint)
+    logger.info(f"sending POST request to {url}...")
+    logger.debug(f"payload: {data}...")
     return requests.post(
-        urljoin(
-            prepend_scheme_if_needed(address, "https"),
-            f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
-        ),
+        url,
         headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         json=data,
         verify=verify,
