@@ -31,15 +31,20 @@ class RequestError(Exception):
         # }
         #
         # The 'details' key is a string so it needs to be JSON-loaded.
+
+        self.details, self.message, self.error = None, None, None  # Defaults
         if details := self.response_json.get("details"):
-            self.details = json.loads(details)
-            # Setting these makes it easier to catch specific errors in the client methods.
-            self.message, self.error = [self.details.get(k) for k in ["message", "error"]]
+            try:
+                self.details = json.loads(details)
+                # Setting these makes it easier to catch specific errors in the client methods.
+                self.message, self.error = [self.details.get(k) for k in ["message", "error"]]
+            except json.JSONDecodeError:
+                # The details key is not JSON, take the raw string instead & leave details & message as None.
+                self.details = details
             exception_message = (
                 f"({self.status_code}) Request to {self.address} failed: {self.details}"
             )
         else:
-            self.details, self.message, self.error = None, None, None
             exception_message = (
                 f"({self.status_code}) Request to {self.address} failed: {self.response_json}"
             )

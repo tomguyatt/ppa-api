@@ -28,7 +28,7 @@ EXCEPTIONS = {
     "request_error": exception_map(
         exception=exceptions.RequestError,
         pattern=re.compile(
-            r"Request Error \(400\)\. Message: This is a request error message\. Details: no details provided\. Hint: Check the request data\."
+            r"\(400\) Request to https://127.0.0.1/backend/v1/rest/revisions failed: Check the request data"
         ),
     ),
     "non_json_response": exception_map(

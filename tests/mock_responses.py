@@ -5,7 +5,7 @@ INVALID_NON_JSON = {"text": "I am an unhandled non-JSON response"}
 PERMISSION_DENIED = {"json": {}, "status_code": 403}  # No real JSON response is required here.
 
 REQUEST_ERROR = {
-    "json": {"message": "This is a request error message", "hint": "Check the request data"},
+    "json": {"message": "This is a request error message", "details": "Check the request data"},
     "status_code": 400,
 }
 
