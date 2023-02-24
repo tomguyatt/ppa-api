@@ -21,3 +21,7 @@ pytest:
 	$(VENV_PATH)/bin/pip install -e ".[test]"
 	$(VENV_PATH)/bin/pytest tests/ --cov-report term --cov=ppa_api
 	$(VENV_PATH)/bin/coverage html
+
+.PHONY: build
+build:
+	$(VENV_PATH)/bin/python3.8 setup.py bdist_wheel
