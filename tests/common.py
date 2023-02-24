@@ -35,7 +35,6 @@ def _generate_url(endpoint):
 
 @contextlib.contextmanager
 def mock_requests(mocked_requests):
-
     if unsupported_methods := [r[0] for r in mocked_requests if r[0] not in {"get", "post"}]:
         raise ValueError(
             "Mock request method(s) '{}' not supported.".format(

@@ -54,12 +54,7 @@ OLD_PPA = common.get_client()
             None,
         ],
     ],
-    ids=[
-        "groups",
-        "group_by_name",
-        "group_by_id",
-        "group_record_modifier",
-    ],
+    ids=["groups", "group_by_name", "group_by_id", "group_record_modifier"],
 )
 def test_group_requests(
     mocker: Callable,

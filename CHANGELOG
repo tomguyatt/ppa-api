@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2023-02-24
+### Added
+- Add new set_kerberos_config method for setting Kerberos configuration in the PPA appliance.
+- Add new attributes to RequestError exception: address, status_code, response_json, details, message, error.
+
+### Fixed
+- 201 (resource created) responses no longer raise an exception.
+
 ## [2.3.1] - 2022-06-23
 ### Fixed
 - Correctly load users who do not have any associated groups.

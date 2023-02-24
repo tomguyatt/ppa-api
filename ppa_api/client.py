@@ -312,3 +312,37 @@ class PPAClient:
         ):
             return task_result
         raise exceptions.NoData(f"No result data was saved by task with UUID '{uuid}'.")
+
+    def set_kerberos_config(
+        self,
+        address: str,
+        domain: str,
+        username: str,
+        password: str,
+        enabled: Optional[bool] = True,
+    ) -> None:
+        try:
+            self._request(
+                API.config,
+                data={
+                    "key": "kerberos",
+                    "value": {
+                        "host": address,
+                        "realm": domain,
+                        "username": username,
+                        "secret": password,
+                        "enabled": enabled,
+                        "config": "",
+                    },
+                },
+            )
+        except exceptions.RequestError as e:
+            if all((e.message is not None, e.message.lower() == "invalid kerberos configuration")):
+                raise exceptions.ConfigurationError(f"{e.message}, {e.error}")
+            raise e
+        except exceptions.ServerError as e:
+            if "cannot unmarshal" in str(e):
+                raise exceptions.ConfigurationError(
+                    "Invalid Kerberos Configuration. One or more of the supplied values is not in the correct format."
+                )
+            raise e
