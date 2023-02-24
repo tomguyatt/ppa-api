@@ -116,7 +116,8 @@ class PPAClient:
     @create.users
     def users(self) -> List[User]:
         return self._request(
-            API.users, params={"select": user_query_params, "deleted_at": "is.null"},
+            API.users,
+            params={"select": user_query_params, "deleted_at": "is.null"},
         )
 
     @create.users
@@ -129,14 +130,16 @@ class PPAClient:
     @create.users
     def deleted_users(self) -> List[User]:
         return self._request(
-            API.users, params={"select": user_query_params, "deleted_at": "not.is.null"},
+            API.users,
+            params={"select": user_query_params, "deleted_at": "not.is.null"},
         )
 
     @create.users
     def user_by_id(self, user_id: Union[str, int]) -> Optional[User]:
         try:
             return self._request(
-                API.users, params={"id": f"eq.{user_id}", "select": user_query_params},
+                API.users,
+                params={"id": f"eq.{user_id}", "select": user_query_params},
             )[0]
         except IndexError:
             return None
@@ -145,7 +148,8 @@ class PPAClient:
     def user_by_username(self, name: str) -> Optional[User]:
         try:
             return self._request(
-                API.users, params={"username": f"ilike.*\\{name}", "select": user_query_params},
+                API.users,
+                params={"username": f"ilike.*\\{name}", "select": user_query_params},
             )[0]
         except IndexError:
             return None
@@ -199,7 +203,10 @@ class PPAClient:
         raise exceptions.NoTaskFound(f"No task was found with UUID '{uuid}'.")
 
     def wait_for_task(
-        self, uuid: str, timeout: Optional[int] = 600, interval: Optional[Union[int, float]] = 5,
+        self,
+        uuid: str,
+        timeout: Optional[int] = 600,
+        interval: Optional[Union[int, float]] = 5,
     ) -> Task:
         @timeout_decorator.timeout(
             timeout,
@@ -221,7 +228,9 @@ class PPAClient:
         try:
             return self.task_by_uuid(
                 self._request(
-                    API.rpc, endpoint="start_task", data={"image_name": name, "payload": payload},
+                    API.rpc,
+                    endpoint="start_task",
+                    data={"image_name": name, "payload": payload},
                 )
             )
         except exceptions.RequestError as e:
@@ -247,7 +256,12 @@ class PPAClient:
 
     @minimum_version("2.8.0")
     def delay_task(
-        self, name: str, *, delay: int, description: str, payload: OptionalDict = None,
+        self,
+        name: str,
+        *,
+        delay: int,
+        description: str,
+        payload: OptionalDict = None,
     ) -> DelayedTask:
         if not self.image_by_name(name):
             raise exceptions.NoImageFound(
@@ -273,7 +287,10 @@ class PPAClient:
                 )
             raise e
 
-    def cancel_task(self, uuid: str,) -> None:
+    def cancel_task(
+        self,
+        uuid: str,
+    ) -> None:
         uuid = validate_uuid(uuid)
         try:
             self._request(API.rpc, endpoint="cancel_task", data={"uuid": validate_uuid(uuid)})

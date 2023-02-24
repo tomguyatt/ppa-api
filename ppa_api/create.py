@@ -38,7 +38,6 @@ def _creator(
     results: Union[List[dict], dict],
     modifier: Optional[Callable] = None,
 ) -> Optional[List]:
-
     if results is None:
         return None
 
