@@ -1,6 +1,6 @@
+import json
 import logging
 import functools
-import json
 
 from uuid import UUID
 from distutils.version import StrictVersion
@@ -61,10 +61,12 @@ def api_call(func) -> Callable:
         try:
             response_json = response.json()
         except json.decoder.JSONDecodeError:
-            if response.status_code == 204:
-                # The request was processed but no data was returned.
+            if response.status_code in {
+                204,  # The request was processed but no data was returned
+                201,  # Resource created successfully
+            }:
                 return None
-            if response.status_code == 403:
+            elif response.status_code == 403:
                 raise exceptions.AuthenticationFailed(
                     "Forbidden (403). Failed to authenticate to PPA using the supplied API key."
                 )
@@ -79,8 +81,15 @@ def api_call(func) -> Callable:
         if response.status_code == 200:
             return response_json
 
+        exception_kwargs = {
+            "address": address,
+            "api": api,
+            "endpoint": endpoint,
+            "status_code": response.status_code,
+            "response_json": response_json,
+        }
         try:
-            raise exceptions.EXCEPTION_MAP[response.status_code](response_json, endpoint)
+            raise exceptions.EXCEPTION_MAP[response.status_code](**exception_kwargs)
         except KeyError:
             raise exceptions.UnhandledRequestError(
                 f"Unhandled ({response.status_code}). Response body: {response_json}."
@@ -145,3 +154,4 @@ class API:
     images = functools.partial(_get_request, api="rest", endpoint="images")
     revisions = functools.partial(_get_request, api="rest", endpoint="revisions")
     rpc = functools.partial(_post_request, api="rest/rpc")
+    config = functools.partial(_post_request, api="rest", endpoint="config")

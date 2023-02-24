@@ -1,15 +1,14 @@
 import os
 import sys
 import time
-import urllib3
 
 from typing import Optional
 from getpass import getpass
 
 from ppa_api import client
 
-
 # Uncomment below if not using a trusted certificate.
+# import urllib3
 # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -31,7 +30,7 @@ def main() -> None:
     ppa = client.PPAClient(
         _get_env_key("PPA_ADDRESS", "Address: "),
         api_key=_get_env_key("PPA_API_KEY", "API Key: ", hidden=True),
-        verify_cert=True,  # Change to False if not using a trusted certificate.
+        verify=True,  # Change to False if not using a trusted certificate.
     )
 
     task = ppa.start_task_async(_get_task_name())

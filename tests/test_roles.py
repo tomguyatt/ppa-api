@@ -54,12 +54,7 @@ OLD_PPA = common.get_client()
             None,
         ],
     ],
-    ids=[
-        "roles",
-        "role_by_name",
-        "role_by_id",
-        "user_record_modifier",
-    ],
+    ids=["roles", "role_by_name", "role_by_id", "user_record_modifier"],
 )
 def test_role_requests(
     mocker: Callable,

@@ -103,11 +103,7 @@ def test_delay_task():
 
 
 def test_delay_not_found():
-    with common.mock_requests(
-        [
-            ("get", "images", mock_responses.EMPTY_LIST),
-        ]
-    ):
+    with common.mock_requests([("get", "images", mock_responses.EMPTY_LIST)]):
         with pytest.raises(
             exceptions.NoImageFound,
             match="There are no images delegated to your identity with the name 'Dummy Task'.",
