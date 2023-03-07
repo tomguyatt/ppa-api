@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0] - 2023-03-07
+### Added
+- New delegated_users instance method used to get delegates for a given task.
+
 ## [2.4.1] - 2023-02-24
 ### Added
 - Add new set_kerberos_config method for setting Kerberos configuration in the PPA appliance.

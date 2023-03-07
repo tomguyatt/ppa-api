@@ -346,3 +346,13 @@ class PPAClient:
                     "Invalid Kerberos Configuration. One or more of the supplied values is not in the correct format."
                 )
             raise e
+
+    @create.users
+    def delegated_users(self, task_name: str) -> List[User]:
+        if image := self.image_by_name(task_name):
+            delegation_data = next(iter(self._request(API.direct_delegations, params={"uuid": f"eq.{image.uuid}"})))
+            return (delegation_data["admin_users"] + delegation_data["direct_users"])
+        raise exceptions.NoImageFound(
+            f"No image was found with name '{task_name}'. The task may not exist "
+            "or you may not have permission to see it."
+        )

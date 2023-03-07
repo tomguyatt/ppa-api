@@ -155,3 +155,4 @@ class API:
     revisions = functools.partial(_get_request, api="rest", endpoint="revisions")
     rpc = functools.partial(_post_request, api="rest/rpc")
     config = functools.partial(_post_request, api="rest", endpoint="config")
+    direct_delegations = functools.partial(_get_request, api="rest", endpoint="image_users")
