@@ -101,21 +101,20 @@ def api_call(func) -> Callable:
 @api_call
 def _get_request(
     *,
+    session: requests.Session,
     address: str,
     api: Optional[str],
     endpoint: str,
-    api_key: str,
     proxy: Optional[str],
     verify: Union[bool, str],
     params: OptionalDict = None,
 ):
-    return requests.get(
+    return session.get(
         urljoin(
             prepend_scheme_if_needed(address, "https"),
             f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
         ),
         params=params,
-        headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         verify=verify,
         proxies=proxy,
     )
@@ -124,20 +123,19 @@ def _get_request(
 @api_call
 def _post_request(
     *,
+    session: requests.Session,
     address: str,
     api: str,
     endpoint: str,
-    api_key: str,
     proxy: Optional[str],
     verify: Union[bool, str],
     data: OptionalDict = None,
 ):
-    return requests.post(
+    return session.post(
         urljoin(
             prepend_scheme_if_needed(address, "https"),
             f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
         ),
-        headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"},
         json=data,
         verify=verify,
         proxies=proxy,

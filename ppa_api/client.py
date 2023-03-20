@@ -1,4 +1,5 @@
 import time
+import requests
 
 from typing import List, Optional, Union, Callable
 
@@ -29,6 +30,8 @@ class PPAClient:
         self.api_key = api_key
         self.verify = verify
         self.proxy = {"https": proxy} if proxy else None
+        self.session = requests.Session()
+        self.session.headers.update({"Accept": "application/json", "Authorization": f"Bearer {api_key}"})
 
         # Doing this on instantiation also checks the credentials for us.
         try:
@@ -41,8 +44,8 @@ class PPAClient:
 
     def _request(self, api_method: Callable, **kwargs):
         return api_method(
+            session=self.session,
             address=self.address,
-            api_key=self.api_key,
             verify=self.verify,
             proxy=self.proxy,
             **kwargs,
