@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2023-03-23
+### Added
+- Support new 'deployed' keyword argument in PPAClient.tasks instance method.
+
+### Changed
+- Use requests.Session instance.
+
 ## [2.4.1] - 2023-02-24
 ### Added
 - Add new set_kerberos_config method for setting Kerberos configuration in the PPA appliance.

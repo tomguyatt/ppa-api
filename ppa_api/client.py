@@ -1,4 +1,5 @@
 import time
+import requests
 
 from typing import List, Optional, Union, Callable
 
@@ -29,6 +30,10 @@ class PPAClient:
         self.api_key = api_key
         self.verify = verify
         self.proxy = {"https": proxy} if proxy else None
+        self.session = requests.Session()
+        self.session.headers.update(
+            {"Accept": "application/json", "Authorization": f"Bearer {api_key}"}
+        )
 
         # Doing this on instantiation also checks the credentials for us.
         try:
@@ -41,8 +46,8 @@ class PPAClient:
 
     def _request(self, api_method: Callable, **kwargs):
         return api_method(
+            session=self.session,
             address=self.address,
-            api_key=self.api_key,
             verify=self.verify,
             proxy=self.proxy,
             **kwargs,
@@ -71,8 +76,13 @@ class PPAClient:
             return None
 
     @create.tasks
-    def tasks(self) -> List[Task]:
-        return self._request(API.tasks)
+    def tasks(self, deployed: Optional[bool] = None) -> List[Task]:
+        return self._request(
+            API.tasks,
+            params={}
+            if deployed is None
+            else {"deployed": f"eq.{'true' if deployed is True else 'false'}"},
+        )
 
     @minimum_version("2.8.0")
     @create.delayed_tasks
