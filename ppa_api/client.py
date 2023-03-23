@@ -31,7 +31,9 @@ class PPAClient:
         self.verify = verify
         self.proxy = {"https": proxy} if proxy else None
         self.session = requests.Session()
-        self.session.headers.update({"Accept": "application/json", "Authorization": f"Bearer {api_key}"})
+        self.session.headers.update(
+            {"Accept": "application/json", "Authorization": f"Bearer {api_key}"}
+        )
 
         # Doing this on instantiation also checks the credentials for us.
         try:
@@ -77,7 +79,9 @@ class PPAClient:
     def tasks(self, deployed: Optional[bool] = None) -> List[Task]:
         return self._request(
             API.tasks,
-            params={} if deployed is None else {"deployed": f"eq.{'true' if deployed is True else 'false'}"}
+            params={}
+            if deployed is None
+            else {"deployed": f"eq.{'true' if deployed is True else 'false'}"},
         )
 
     @minimum_version("2.8.0")
