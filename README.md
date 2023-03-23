@@ -414,6 +414,7 @@ Task(
     author='John Doe',
     cancelled_at=None,
     cancelled_by=None,
+    deployed=True,
     duration='00:01:33.945833',
     exit_code=0,
     exit_message=None,
@@ -686,6 +687,7 @@ The fields available for each type of named tuple are listed below.
 - author
 - cancelled_at
 - cancelled_by
+- deployed
 - duration
 - exit_code
 - exit_message

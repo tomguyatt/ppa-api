@@ -22,6 +22,7 @@ Task = namedtuple(
         "author",
         "cancelled_at",
         "cancelled_by",
+        "deployed",
         "duration",
         "exit_code",
         "exit_message",
