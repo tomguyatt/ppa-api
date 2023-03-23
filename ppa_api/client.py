@@ -74,8 +74,11 @@ class PPAClient:
             return None
 
     @create.tasks
-    def tasks(self) -> List[Task]:
-        return self._request(API.tasks)
+    def tasks(self, deployed: Optional[bool] = None) -> List[Task]:
+        return self._request(
+            API.tasks,
+            params={} if deployed is None else {"deployed": f"eq.{'true' if deployed is True else 'false'}"}
+        )
 
     @minimum_version("2.8.0")
     @create.delayed_tasks
