@@ -23,7 +23,7 @@ class RequestError(Exception):
         self.status_code = status_code
         self.response_json = response_json
 
-        # Response JSON looks like this:
+        # Response JSON usually looks like this:
         #
         # {
         #   'hint': 'application/json; charset=utf-8',
