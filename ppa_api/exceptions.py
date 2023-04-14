@@ -37,9 +37,13 @@ class RequestError(Exception):
             try:
                 self.details = json.loads(details)
                 # Setting these makes it easier to catch specific errors in the client methods.
-                self.message, self.error = [self.details.get(k) for k in ["message", "error"]]
+                if isinstance(self.details, dict):
+                    self.message, self.error = [self.details.get(k) for k in ["message", "error"]]
+                else:
+                    # Unexpected format, leave error & message as None.
+                    pass
             except json.JSONDecodeError:
-                # The details key is not JSON, take the raw string instead & leave details & message as None.
+                # The details key is not JSON, take the raw string & leave error & message as None.
                 self.details = details
             exception_message = (
                 f"({self.status_code}) Request to {self.address} failed: {self.details}"
