@@ -142,6 +142,30 @@ def _post_request(
     )
 
 
+@api_call
+def _patch_request(
+    *,
+    session: requests.Session,
+    address: str,
+    api: str,
+    endpoint: str,
+    params: Optional[dict] = None,
+    proxy: Optional[str],
+    verify: Union[bool, str],
+    data: OptionalDict = None,
+):
+    return session.patch(
+        urljoin(
+            prepend_scheme_if_needed(address, "https"),
+            f"/backend/v1/{api}/{endpoint}" if api else f"/backend/v1/{endpoint}",
+        ),
+        params=params,
+        json=data,
+        verify=verify,
+        proxies=proxy,
+    )
+
+
 class API:
     base = functools.partial(_get_request, api=None)
     tasks = functools.partial(_get_request, api="rest", endpoint="tasks")
