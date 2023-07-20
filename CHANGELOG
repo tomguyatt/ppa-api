@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.6.3] - 2023-07-20
 ### Added
 - Add optional 'days' argument to client.tasks_by_name.
+- Add new client.recent_tasks function.
 
 ## [2.6.2] - 2023-07-20
 ### Added
