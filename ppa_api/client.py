@@ -84,6 +84,10 @@ class PPAClient:
             else {"deployed": f"eq.{'true' if deployed is True else 'false'}"},
         )
 
+    @create.tasks
+    def tasks_by_name(self, name: str) -> List[Image]:
+        return self._request(API.tasks, params={"image": f"eq.{name}"})
+
     @minimum_version("2.8.0")
     @create.delayed_tasks
     def delayed_tasks(self) -> List[DelayedTask]:
