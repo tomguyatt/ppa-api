@@ -1,5 +1,6 @@
 import time
 import requests
+import datetime
 
 from typing import List, Optional, Union, Callable
 
@@ -85,8 +86,27 @@ class PPAClient:
         )
 
     @create.tasks
-    def tasks_by_name(self, name: str) -> List[Task]:
-        return self._request(API.tasks, params={"image": f"eq.{name}"})
+    def tasks_by_name(self, name: str, days: Optional[bool] = None) -> List[Task]:
+        params = {"image": f"eq.{name}", "order": "started_at.desc"}
+        if days is not None:
+            params.update(
+                started_at=(
+                    f"gt.{(datetime.datetime.utcnow() - datetime.timedelta(days=days)).strftime('%Y-%m-%dT%H:%M')}"
+                )
+            )
+        return self._request(API.tasks, params=params)
+
+    @create.tasks
+    def recent_tasks(self, days: Optional[int] = 30):
+        return self._request(
+            API.tasks,
+            params={
+                "order": "started_at.desc",
+                "started_at": (
+                    f"gt.{(datetime.datetime.utcnow() - datetime.timedelta(days=days)).strftime('%Y-%m-%dT%H:%M')}"
+                ),
+            },
+        )
 
     @minimum_version("2.8.0")
     @create.delayed_tasks
