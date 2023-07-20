@@ -85,7 +85,7 @@ class PPAClient:
         )
 
     @create.tasks
-    def tasks_by_name(self, name: str) -> List[Image]:
+    def tasks_by_name(self, name: str) -> List[Task]:
         return self._request(API.tasks, params={"image": f"eq.{name}"})
 
     @minimum_version("2.8.0")
