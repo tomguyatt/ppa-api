@@ -96,6 +96,18 @@ class PPAClient:
             )
         return self._request(API.tasks, params=params)
 
+    @create.tasks
+    def recent_tasks(self, days: Optional[int] = 30):
+        return self._request(
+            API.tasks,
+            params={
+                "order": "started_at.desc",
+                "started_at": (
+                    f"gt.{(datetime.datetime.utcnow() - datetime.timedelta(days=days)).strftime('%Y-%m-%dT%H:%M')}"
+                ),
+            },
+        )
+
     @minimum_version("2.8.0")
     @create.delayed_tasks
     def delayed_tasks(self) -> List[DelayedTask]:
