@@ -3,10 +3,10 @@ import logging
 import functools
 
 from uuid import UUID
-from distutils.version import StrictVersion
 from typing import Optional, Dict, Any, List, Union, Callable
 
 import requests
+from packaging.version import parse
 
 from requests.compat import urljoin  # type: ignore
 from requests.utils import prepend_scheme_if_needed
@@ -43,7 +43,12 @@ def validate_payload(payload: AnyJson) -> AnyJson:
 def minimum_version(minimum_version: str):
     def _function_wrapper(method):
         def _check_version(instance, *args, **kwargs):
-            if StrictVersion(minimum_version) > StrictVersion(instance.version):
+            minimum, current = map(parse, (minimum_version, instance.version))
+
+            if current == parse("0.0.0"):
+                logger.info(f"skipping version check for method {method.__name__} as this is a dev-mode appliance...")
+
+            elif minimum > current:
                 raise exceptions.VersionError(
                     f"The {method.__name__} method requires PPA version {minimum_version} or later, but your version is {instance.version}."
                 )

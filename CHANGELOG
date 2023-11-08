@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2023-11-08
+### Changed
+- Skip appliance version check if the version is 0.0.0 (dev-mode appliance).
+
 ## [2.6.3] - 2023-07-20
 ### Added
 - Add optional 'days' argument to client.tasks_by_name.

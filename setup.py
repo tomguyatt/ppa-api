@@ -9,7 +9,7 @@ TEST_DEPENDENCIES = [
 
 setup(
     name="ppa-api",
-    version="2.6.3",  # https://semver.org/
+    version="2.7.0",  # https://semver.org/
     author="Osirium",
     maintainer="Tom Guyatt",
     author_email="supportdesk@osirium.com",
@@ -22,7 +22,7 @@ setup(
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    install_requires=["requests~=2.0", "timeout-decorator==0.5.0"],
+    install_requires=["requests~=2.0", "timeout-decorator==0.5.0", "packaging==23.0"],
     tests_require=TEST_DEPENDENCIES,
     extras_require={"test": TEST_DEPENDENCIES},
     test_suite="tests",
